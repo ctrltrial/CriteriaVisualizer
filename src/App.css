@@ -1,0 +1,32 @@
+/* Ensure full height for the page */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main flexbox container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Navbar should stay at the top */
+.navbar-container {
+  flex-shrink: 0; /* Keeps navbar height fixed */
+}
+
+/* Scatterplot should take the remaining space */
+.main-content {
+  flex-grow: 1; /* Makes it fill the rest of the viewport */
+  width: 100%;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrolling */
+  width: 100vw;
+  height: 100vh;
+}
