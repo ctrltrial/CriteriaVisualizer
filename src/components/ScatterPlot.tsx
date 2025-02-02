@@ -83,7 +83,7 @@ function Points({
   return (
     <>
       {/* Grid helper that matches data bounds */}
-      <gridHelper
+      {/* <gridHelper
         args={[Math.max(width, height), 10]}
         rotation={[Math.PI / 2, 0, 0]}
         position={[
@@ -91,7 +91,7 @@ function Points({
           (bounds.maxY + bounds.minY) / 2,
           -0.01,
         ]}
-      />
+      /> */}
 
       <instancedMesh
         ref={meshRef}

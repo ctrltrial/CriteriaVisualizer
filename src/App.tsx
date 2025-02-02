@@ -8,7 +8,7 @@ import Points from "./components/ScatterPlot";
 function App() {
   // Example data - replace with your actual data
   const data = Array.from({ length: 2000 }, () => ({
-    x: (Math.random() - 0.5) * 20,
+    x: (Math.random() - 0.5) * 60,
     y: (Math.random() - 0.5) * 20,
   }));
 
@@ -32,7 +32,7 @@ function App() {
           />
           <Points
             points={data}
-            pointSize={0.1}
+            pointSize={0.05}
             pointColor="blue"
             padding={0.1} // 10% padding around the data
           />
