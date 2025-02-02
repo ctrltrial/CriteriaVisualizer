@@ -19,8 +19,24 @@ html, body {
 
 /* Scatterplot should take the remaining space */
 .main-content {
-  flex-grow: 1; /* Makes it fill the rest of the viewport */
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+.canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Ensure the navbar appears above the canvas */
+.navbar {
+  position: relative;
+  z-index: 2;
 }
 
 html, body {
