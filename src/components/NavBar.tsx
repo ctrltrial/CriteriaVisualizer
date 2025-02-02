@@ -1,14 +1,17 @@
+import "./NavBar.css"; // Import styles for more customization
+
 function NavBar() {
   return (
-    <nav className="navbar fixed-top bg-light shadow-sm">
-      <div className="container d-flex align-items-center gap-3">
+    <nav className="navbar fixed-top glassmorphic-nav">
+      <div className="container d-flex justify-content-center align-items-center gap-3">
         <img
           src="ctrl-trial-logo-copy.png"
           alt="Logo"
-          width="110"
-          height="50"
+          width="90"
+          height="40"
+          className="logo"
         />
-        <a className="navbar-brand fs-4 text-dark">
+        <a className="navbar-brand modern-text">
           Clinical Trial Criteria Visualizer
         </a>
       </div>
