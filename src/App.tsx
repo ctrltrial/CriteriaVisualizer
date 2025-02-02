@@ -1,19 +1,41 @@
 import "./App.css";
 import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "./components/NavBar";
 import Points from "./components/ScatterPlot";
 
 function App() {
+  // Example data - replace with your actual data
+  const data = Array.from({ length: 2000 }, () => ({
+    x: (Math.random() - 0.5) * 20,
+    y: (Math.random() - 0.5) * 20,
+  }));
+
   return (
     <div className="main-content">
       <NavBar />
       <div className="canvas-container">
         <Canvas
-          camera={{ position: [0, 0, 10], fov: 75, near: 0.1, far: 1000 }}
-          style={{ background: "#f0f0f0" }} // Optional: add background color
+          orthographic // Use orthographic camera for true 2D view
+          camera={{
+            position: [0, 0, 100],
+            zoom: 40, // Adjust this value to change the default zoom level
+            up: [0, 0, 1],
+          }}
+          style={{ background: "#f0f0f0" }}
         >
-          <Points />
+          <OrbitControls
+            enableRotate={false}
+            enableZoom={true}
+            enablePan={true}
+          />
+          <Points
+            points={data}
+            pointSize={0.1}
+            pointColor="blue"
+            padding={0.1} // 10% padding around the data
+          />
         </Canvas>
       </div>
     </div>
