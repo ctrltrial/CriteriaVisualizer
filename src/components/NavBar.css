@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&display=swap");
+
 /* Apply modern font */
 body {
     font-family: 'Raleway', sans-serif;
@@ -15,7 +17,7 @@ body {
   /* Modern text styling */
   .modern-text {
     font-size: 20px;
-    font-weight: 600;
+    font-weight: 700;
     color: #222; /* Darker color for contrast */
     transition: all 0.3s ease-in-out;
     /* text-transform: uppercase; */
