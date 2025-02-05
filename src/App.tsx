@@ -4,14 +4,9 @@ import { OrbitControls } from "@react-three/drei";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "./components/NavBar";
 import Points from "./components/ScatterPlot";
+import { data } from "./utils/data";
 
 function App() {
-  // Example data - replace with your actual data
-  const data = Array.from({ length: 2000 }, () => ({
-    x: (Math.random() - 0.5) * 60,
-    y: (Math.random() - 0.5) * 40,
-  }));
-
   return (
     <div className="main-content">
       <NavBar />
