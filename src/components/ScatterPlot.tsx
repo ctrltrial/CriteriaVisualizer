@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { useEffect, useRef, useMemo } from "react";
 import { OrbitControls } from "@react-three/drei";
+import { useThree } from "@react-three/fiber";
+import NavBar from "./NavBar";
 
 interface Point {
   x: number;
@@ -11,17 +13,18 @@ interface ScatterPlotProps {
   points?: Point[];
   pointSize?: number;
   pointColor?: string;
-  padding?: number; // Percentage of padding around data
+  padding?: number;
 }
 
 function Points({
   pointSize = 0.05,
   pointColor = "blue",
   points,
-  padding = 0.1, // 10% padding by default
+  padding = 0.1,
 }: ScatterPlotProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null!);
-  const numPoints = points?.length || 2000; // default number of points for testing
+  const { camera } = useThree();
+  const numPoints = points?.length || 2000;
 
   // Calculate bounds from data or use defaults
   const bounds = useMemo(() => {
@@ -53,6 +56,31 @@ function Points({
   const width = bounds.maxX - bounds.minX;
   const height = bounds.maxY - bounds.minY;
 
+  // Initial camera zoom to fit data
+  useEffect(() => {
+    if (camera) {
+      const xRange = bounds.maxX - bounds.minX;
+      const yRange = bounds.maxY - bounds.minY;
+
+      const navbarHeight = 56;
+      const availableHeight = window.innerHeight - navbarHeight;
+
+      const aspectRatio = window.innerWidth / availableHeight;
+      let zoom;
+
+      if (xRange / yRange > aspectRatio) {
+        // Width is the limiting factor
+        zoom = window.innerWidth / xRange;
+      } else {
+        // Height is the limiting factor
+        zoom = availableHeight / yRange;
+      }
+
+      (camera as THREE.OrthographicCamera).zoom = zoom;
+      camera.updateProjectionMatrix();
+    }
+  }, [width, height, bounds]);
+
   useEffect(() => {
     if (!meshRef.current) return;
 
@@ -82,17 +110,6 @@ function Points({
 
   return (
     <>
-      {/* Grid helper that matches data bounds */}
-      {/* <gridHelper
-        args={[Math.max(width, height), 10]}
-        rotation={[Math.PI / 2, 0, 0]}
-        position={[
-          (bounds.maxX + bounds.minX) / 2,
-          (bounds.maxY + bounds.minY) / 2,
-          -0.01,
-        ]}
-      /> */}
-
       <instancedMesh
         ref={meshRef}
         args={[

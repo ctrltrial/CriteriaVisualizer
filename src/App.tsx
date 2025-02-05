@@ -9,7 +9,7 @@ function App() {
   // Example data - replace with your actual data
   const data = Array.from({ length: 2000 }, () => ({
     x: (Math.random() - 0.5) * 60,
-    y: (Math.random() - 0.5) * 20,
+    y: (Math.random() - 0.5) * 40,
   }));
 
   return (
@@ -32,7 +32,7 @@ function App() {
           />
           <Points
             points={data}
-            pointSize={0.05}
+            pointSize={0.1}
             pointColor="blue"
             padding={0.1} // 10% padding around the data
           />
