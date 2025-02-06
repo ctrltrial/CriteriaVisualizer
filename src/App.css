@@ -49,3 +49,68 @@ html, body {
   width: 100vw;
   height: 100vh;
 }
+
+/* Add these at the bottom of App.css */
+.dxrs-rs-container {
+  min-height: 200px !important;
+}
+
+.dxrsb-selector {
+  height: 200px !important;
+}
+
+.dx-range-selector {
+  height: 200px !important;
+}
+
+/* Light theme overrides */
+.dx-range-selector {
+  height: 200px !important;
+  background-color: #ffffff !important;
+}
+
+.dxrs-rs-container {
+  background-color: #ffffff !important;
+}
+
+.dxrsb-selector {
+  background-color: #f8f9fa !important;
+}
+
+.dxrsb-range {
+  background-color: rgba(25, 118, 210, 0.2) !important;
+}
+
+.dx-slider-handle {
+  background-color: #1976d2 !important;
+}
+
+.dx-slider-range {
+  background-color: #1976d2 !important;
+}
+
+/* Reduce internal RangeSelector padding */
+.dx-range-selector {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.dxrs-rs-container {
+  padding: 0 !important;
+}
+
+.dxrsb-selector {
+  padding: 5px 0 !important;
+}
+
+.dxrsb-axis {
+  margin: 5px 0 !important;
+}
+
+.glassmorphic-slider {
+  background: rgba(255, 255, 255, 0.1); 
+  backdrop-filter: blur(20px); /* Soft blur for transparency */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px 0;
+}
