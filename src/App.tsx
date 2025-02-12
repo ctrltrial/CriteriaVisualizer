@@ -5,7 +5,7 @@ import { OrbitControls } from "@react-three/drei";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "./components/NavBar";
 import Points from "./components/ScatterPlot";
-import { data } from "./utils/data";
+import { data, minDataVal, maxDataVal } from "./utils/data";
 import RangeSlider from "./components/RangeSlider";
 
 function App() {
@@ -20,11 +20,21 @@ function App() {
   );
 
   const histogramData = useMemo(() => {
-    return Array.from({ length: 100 }, (_, i) => ({
-      arg: i,
-      val: data.filter((d) => Math.floor(d.filterVal) === i).length,
-    }));
-  }, []);
+    const BIN_WIDTH = 1;
+
+    const numBins = Math.ceil(maxDataVal - minDataVal);
+
+    return Array.from({ length: numBins }, (_, i) => {
+      const binStart = Math.floor(minDataVal) + i;
+      const binEnd = binStart + BIN_WIDTH;
+
+      return {
+        arg: binStart,
+        val: data.filter((d) => d.filterVal >= binStart && d.filterVal < binEnd)
+          .length,
+      };
+    });
+  }, [data, minDataVal, maxDataVal]);
 
   return (
     <div
@@ -61,6 +71,8 @@ function App() {
         data={histogramData}
         value={range}
         onValueChange={setRange}
+        lowerSliderBound={minDataVal}
+        upperSliderBound={maxDataVal}
       />
     </div>
   );

@@ -24,7 +24,7 @@ function Points({
 }: ScatterPlotProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null!);
   const { camera } = useThree();
-  const numPoints = points?.length || 2000;
+  const numPoints = points?.length || 0;
 
   // Calculate bounds from data or use defaults
   const bounds = useMemo(() => {

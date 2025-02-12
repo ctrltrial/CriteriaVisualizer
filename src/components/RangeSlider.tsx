@@ -4,18 +4,24 @@ import RangeSelector, {
   Scale,
   Chart,
   Series,
+  Format,
+  Label,
 } from "devextreme-react/range-selector";
 
 interface RangeSliderProps {
   data: Array<{ arg: number; val: number }>;
   value: [number, number];
   onValueChange: (value: [number, number]) => void;
+  lowerSliderBound: number;
+  upperSliderBound: number;
 }
 
 const RangeSlider: React.FC<RangeSliderProps> = ({
   data,
   value,
   onValueChange,
+  lowerSliderBound,
+  upperSliderBound,
 }) => {
   const handleValueChanged = (e: any) => {
     onValueChange(e.value);
@@ -35,7 +41,14 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
         value={value}
       >
         <Margin top={10} bottom={10} left={30} right={30} />
-        <Scale startValue={0} endValue={100} />
+        <Scale startValue={lowerSliderBound} endValue={upperSliderBound} />
+        <Scale
+          startValue={lowerSliderBound}
+          endValue={upperSliderBound}
+          tickInterval={1}
+        >
+          <Label format="" />
+        </Scale>
         <Chart>
           <Series
             type="bar"
