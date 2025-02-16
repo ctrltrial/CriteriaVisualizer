@@ -7,6 +7,7 @@ import NavBar from "./components/NavBar";
 import Points from "./components/ScatterPlot";
 import { data, minDataVal, maxDataVal } from "./utils/data";
 import RangeSlider from "./components/RangeSlider";
+import { TOUCH, MOUSE } from "three";
 
 // Color palette for decades (purple to red gradient)
 const DECADE_COLORS = {
@@ -92,7 +93,18 @@ function App() {
           <OrbitControls
             enableRotate={false}
             enableZoom={true}
+            zoomSpeed={0.5}
             enablePan={true}
+            mouseButtons={{
+              LEFT: MOUSE.PAN,
+            }}
+            touches={{
+              ONE: TOUCH.PAN, // mobile settings
+              TWO: TOUCH.DOLLY_PAN,
+            }}
+            screenSpacePanning={true}
+            maxAzimuthAngle={0} // Prevent orbital rotation (same initial view every time)
+            minAzimuthAngle={0}
           />
           {pointGroups.map((group, i) => (
             <Points
