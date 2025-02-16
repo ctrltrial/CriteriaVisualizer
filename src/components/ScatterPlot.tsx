@@ -1,6 +1,5 @@
 import * as THREE from "three";
-import { useEffect, useRef, useMemo } from "react";
-import { OrbitControls } from "@react-three/drei";
+import { useEffect, useRef, useMemo, useState } from "react";
 import { useThree } from "@react-three/fiber";
 
 interface Point {
@@ -23,12 +22,18 @@ function Points({
 }: ScatterPlotProps) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const { camera } = useThree();
+  const [initialBounds, setInitialBounds] = useState<{
+    minX: number;
+    maxX: number;
+    minY: number;
+    maxY: number;
+  } | null>(null);
+  const [needsInitialFit, setNeedsInitialFit] = useState(true);
 
-  // Calculate bounds with padding
-  const { bounds, aspect } = useMemo(() => {
-    if (!points.length) return { bounds: null, aspect: 1 };
+  // Calculate bounds once on first mount
+  const bounds = useMemo(() => {
+    if (!points.length || initialBounds) return initialBounds;
 
-    // Calculate min/max in single pass
     const { minX, maxX, minY, maxY } = points.reduce(
       (acc, { x, y }) => ({
         minX: Math.min(acc.minX, x),
@@ -36,43 +41,56 @@ function Points({
         minY: Math.min(acc.minY, y),
         maxY: Math.max(acc.maxY, y),
       }),
-      { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity }
+      {
+        minX: Infinity,
+        maxX: -Infinity,
+        minY: Infinity,
+        maxY: -Infinity,
+      }
     );
 
-    // Apply padding
     const xPad = (maxX - minX) * padding;
     const yPad = (maxY - minY) * padding;
 
     return {
-      bounds: {
-        minX: minX - xPad,
-        maxX: maxX + xPad,
-        minY: minY - yPad,
-        maxY: maxY + yPad,
-      },
-      aspect: (maxX - minX) / (maxY - minY),
+      minX: minX - xPad,
+      maxX: maxX + xPad,
+      minY: minY - yPad,
+      maxY: maxY + yPad,
     };
-  }, [points, padding]);
+  }, [points.length, padding]); // Only recalculate if point count changes
 
-  // Camera setup
+  // Initial camera setup
   useEffect(() => {
-    if (!bounds || !(camera instanceof THREE.OrthographicCamera)) return;
+    if (
+      !needsInitialFit ||
+      !bounds ||
+      !(camera instanceof THREE.OrthographicCamera)
+    )
+      return;
 
     const viewWidth = window.innerWidth;
-    const viewHeight = window.innerHeight - 56; // Adjust for navbar
+    const viewHeight = window.innerHeight - 56; // Navbar height
 
-    const width = bounds.maxX - bounds.minX;
-    const height = bounds.maxY - bounds.minY;
+    const dataWidth = bounds.maxX - bounds.minX;
+    const dataHeight = bounds.maxY - bounds.minY;
+    const dataAspect = dataWidth / dataHeight;
     const viewAspect = viewWidth / viewHeight;
 
-    // Calculate zoom based on dominant axis
-    const zoom = viewAspect > aspect ? viewHeight / height : viewWidth / width;
+    const zoom =
+      viewAspect > dataAspect ? viewHeight / dataHeight : viewWidth / dataWidth;
 
-    camera.zoom = zoom * 0.9; // Add small margin
+    camera.zoom = zoom * 0.9; // 10% margin
+    camera.position.set(
+      (bounds.maxX + bounds.minX) / 2,
+      (bounds.maxY + bounds.minY) / 2,
+      100
+    );
     camera.updateProjectionMatrix();
-  }, [bounds, aspect, camera]);
+    setNeedsInitialFit(false);
+  }, [bounds, camera, needsInitialFit]);
 
-  // Points rendering
+  // Update points without affecting camera
   useEffect(() => {
     if (!meshRef.current || !points.length) return;
 
