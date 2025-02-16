@@ -1,8 +1,7 @@
 export const data = Array.from({ length: 2000 }, () => ({
   x: (Math.random() - 0.5) * 60,
   y: (Math.random() - 0.5) * 40,
-  filterVal: 1970 + Math.random() * 55, // filter val from 1970 to 2025
-  // filterVal: Math.round(Math.random() * 50), // filter val from 0 to 100
+  filterVal: 1970 + Math.pow(Math.random(), 0.3) * 55, // 1970-2025, skewed earlier
 }));
 
 export const minDataVal = Math.round(

@@ -10,12 +10,12 @@ import RangeSlider from "./components/RangeSlider";
 
 // Color palette for decades (purple to red gradient)
 const DECADE_COLORS = {
-  "1970-1980": "#6a4c93",
-  "1980-1990": "#8a5c9e",
-  "1990-2000": "#a96ca9",
-  "2000-2010": "#c87cb4",
-  "2010-2020": "#e68cbf",
-  "2020+": "#ff9cca",
+  "1970-1979": "#1ab2ff",
+  "1980-1989": "#009ce3",
+  "1990-1999": "#0088c6",
+  "2000-2009": "#0074a8",
+  "2010-2019": "#00608a",
+  "2020+": "#004c6d",
 };
 
 function App() {
@@ -33,11 +33,11 @@ function App() {
   // Define decade ranges
   const decadeGroups = useMemo(
     () => [
-      { start: 1970, end: 1980, color: DECADE_COLORS["1970-1980"] },
-      { start: 1980, end: 1990, color: DECADE_COLORS["1980-1990"] },
-      { start: 1990, end: 2000, color: DECADE_COLORS["1990-2000"] },
-      { start: 2000, end: 2010, color: DECADE_COLORS["2000-2010"] },
-      { start: 2010, end: 2020, color: DECADE_COLORS["2010-2020"] },
+      { start: 1970, end: 1979, color: DECADE_COLORS["1970-1979"] },
+      { start: 1980, end: 1989, color: DECADE_COLORS["1980-1989"] },
+      { start: 1990, end: 1999, color: DECADE_COLORS["1990-1999"] },
+      { start: 2000, end: 2009, color: DECADE_COLORS["2000-2009"] },
+      { start: 2010, end: 2019, color: DECADE_COLORS["2010-2019"] },
       { start: 2020, end: Infinity, color: DECADE_COLORS["2020+"] },
     ],
     []
