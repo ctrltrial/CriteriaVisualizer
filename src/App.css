@@ -111,11 +111,12 @@ html, body {
   position: absolute;
   top: 70px;
   right: 20px;
-  background: white;
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   margin-top: 10px;
+  background: rgba(255, 255, 255, 1);
+  backdrop-filter: blur(20px);
   /* margin-right: 0; */
 }
 

@@ -84,7 +84,7 @@ function App() {
         <Canvas
           orthographic
           camera={{
-            position: [0, 0, 100],
+            position: [0, 0, 200],
             zoom: 40,
             up: [0, 0, 1],
           }}
@@ -110,7 +110,7 @@ function App() {
             <Points
               key={i}
               points={group.points}
-              pointSize={0.15}
+              pointSize={0.05}
               pointColor={group.color}
               padding={0.1}
             />
@@ -118,18 +118,7 @@ function App() {
         </Canvas>
       </div>
 
-      <div
-        className="color-legend"
-        style={{
-          position: "absolute",
-          top: 70,
-          right: 20,
-          backgroundColor: "white",
-          padding: "10px",
-          borderRadius: "8px",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-        }}
-      >
+      <div className="color-legend">
         {pointGroups.map((group) => (
           <div
             key={group.label}
