@@ -1,6 +1,6 @@
 # CtrlTrial Criteria Visualizer
 
-A clean, intuitive website to interactively understand and view trends in clinical trial criteria. 
+A sleek, intuitive website to interactively view and understand trends in clinical trial criteria. 
 
 
 ## Vite Configurations
