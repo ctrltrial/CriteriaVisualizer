@@ -1,13 +1,10 @@
-# React + TypeScript + Vite
+# CtrlTrial Criteria Visualizer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A clean, intuitive website to interactively understand and view trends in clinical trial criteria. 
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
+## Vite Configurations
+### Expanding the ESLint configuration
 
 If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
