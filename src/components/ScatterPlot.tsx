@@ -14,7 +14,7 @@ interface ScatterPlotProps {
   padding?: number;
 }
 
-function Points({
+function ScatterPlot({
   pointSize = 0.05,
   pointColor = "blue",
   points = [],
@@ -116,4 +116,4 @@ function Points({
   );
 }
 
-export default Points;
+export default ScatterPlot;
