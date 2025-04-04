@@ -1,5 +1,4 @@
 import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 import { useState, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
@@ -65,17 +64,14 @@ function App() {
   );
 
   return (
-    <div
-      className="main-content"
-      style={{ display: "flex", flexDirection: "column", height: "100vh" }}
-    >
+    <div className="flex flex-col h-screen">
       <NavBar />
 
-      <div style={{ flex: 1, position: "relative" }}>
+      <div className="flex-1 relative">
         <Canvas
           orthographic
           camera={{ position: [0, 0, 200], zoom: 40, up: [0, 0, 1] }}
-          style={{ background: "#f0f0f0" }}
+          className="bg-[#f0f0f0]"
         >
           <OrbitControls
             enableRotate={false}
@@ -99,26 +95,18 @@ function App() {
             />
           ))}
         </Canvas>
-      </div>
 
-      <div className="color-legend">
-        {pointGroups.map(({ label, color }) => (
-          <div
-            key={label}
-            style={{ display: "flex", alignItems: "center", margin: "5px 0" }}
-          >
-            <div
-              style={{
-                width: 16,
-                height: 16,
-                backgroundColor: color,
-                marginRight: 8,
-                borderRadius: "3px",
-              }}
-            />
-            <span>{label}</span>
-          </div>
-        ))}
+        <div className="absolute top-4 right-4 bg-white bg-opacity-80 p-2 rounded shadow z-10">
+          {pointGroups.map(({ label, color }) => (
+            <div key={label} className="flex items-center my-1">
+              <div
+                className="w-4 h-4 mr-2 rounded"
+                style={{ backgroundColor: color }}
+              />
+              <span className="text-sm">{label}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <RangeSlider

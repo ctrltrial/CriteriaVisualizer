@@ -12,12 +12,12 @@ export const maxDataVal = Math.round(
 );
 
 export const DECADE_COLORS = {
-  "1970-1979": "#1ab2ff",
-  "1980-1989": "#009ce3",
-  "1990-1999": "#0088c6",
-  "2000-2009": "#0074a8",
-  "2010-2019": "#00608a",
-  "2020+": "#004c6d",
+  "1970-1979": "#FFA500", 
+  "1980-1989": "#40E0D0",
+  "1990-1999": "#32CD32",
+  "2000-2009": "#1E90FF", 
+  "2010-2019": "#8A2BE2", 
+  "2020+": "#FFC107", 
 };
 
 export const getDecadeGroups = (colors: Record<string, string>) => [
