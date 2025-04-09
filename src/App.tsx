@@ -1,6 +1,4 @@
-import "./App.css";
-
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { TOUCH, MOUSE } from "three";
@@ -91,6 +89,14 @@ function App() {
               points={group.points}
               pointSize={5.0}
               pointColor={group.color}
+              labels={[
+                { x: -25, y: 15, text: "Cluster 0" },
+                { x: -10, y: -15, text: "Cluster 1" },
+                { x: 0, y: 0, text: "Cluster 2" },
+                { x: 10, y: 10, text: "Cluster 3" },
+                { x: 20, y: -10, text: "Cluster 4" },
+                { x: 25, y: 15, text: "Cluster 5" },
+              ]}
             />
           ))}
         </Canvas>
@@ -108,13 +114,15 @@ function App() {
         </div>
       </div>
 
-      <RangeSlider
-        data={histogramData}
-        value={range}
-        onValueChange={setRange}
-        lowerSliderBound={minDataVal}
-        upperSliderBound={maxDataVal}
-      />
+      <div className="relative z-50">
+        <RangeSlider
+          data={histogramData}
+          value={range}
+          onValueChange={setRange}
+          lowerSliderBound={minDataVal}
+          upperSliderBound={maxDataVal}
+        />
+      </div>
     </div>
   );
 }
