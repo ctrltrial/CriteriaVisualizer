@@ -20,7 +20,7 @@ function ScatterPlot({
   points = [],
   padding = 0.1,
 }: ScatterPlotProps) {
-  const meshRef = useRef<THREE.InstancedMesh>(null);
+  const pointsRef = useRef<THREE.Points>(null);
   const { camera } = useThree();
   const [initialBounds, setInitialBounds] = useState<{
     minX: number;
@@ -52,13 +52,16 @@ function ScatterPlot({
     const xPad = (maxX - minX) * padding;
     const yPad = (maxY - minY) * padding;
 
-    return {
+    const computedBounds = {
       minX: minX - xPad,
       maxX: maxX + xPad,
       minY: minY - yPad,
       maxY: maxY + yPad,
     };
-  }, [points.length, padding]); // Only recalculate if point count changes
+
+    setInitialBounds(computedBounds);
+    return computedBounds;
+  }, [points, initialBounds, padding]);
 
   // Initial camera setup
   useEffect(() => {
@@ -70,7 +73,7 @@ function ScatterPlot({
       return;
 
     const viewWidth = window.innerWidth;
-    const viewHeight = window.innerHeight - 56; // Navbar height
+    const viewHeight = window.innerHeight - 0; // NavBar height
 
     const dataWidth = bounds.maxX - bounds.minX;
     const dataHeight = bounds.maxY - bounds.minY;
@@ -80,7 +83,7 @@ function ScatterPlot({
     const zoom =
       viewAspect > dataAspect ? viewHeight / dataHeight : viewWidth / dataWidth;
 
-    camera.zoom = zoom * 0.9; // 10% margin
+    camera.zoom = zoom * 0.9;
     camera.position.set(
       (bounds.maxX + bounds.minX) / 2,
       (bounds.maxY + bounds.minY) / 2,
@@ -90,29 +93,43 @@ function ScatterPlot({
     setNeedsInitialFit(false);
   }, [bounds, camera, needsInitialFit]);
 
-  // Update points without affecting camera
-  useEffect(() => {
-    if (!meshRef.current || !points.length) return;
-
-    const mesh = meshRef.current;
-    const dummy = new THREE.Object3D();
-
+  const positions = useMemo(() => {
+    const arr = new Float32Array(points.length * 3);
     points.forEach(({ x, y }, i) => {
-      dummy.position.set(x, y, 0);
-      dummy.updateMatrix();
-      mesh.setMatrixAt(i, dummy.matrix);
+      arr[i * 3 + 0] = x;
+      arr[i * 3 + 1] = y;
+      arr[i * 3 + 2] = 0;
     });
-
-    mesh.instanceMatrix.needsUpdate = true;
+    return arr;
   }, [points]);
 
   if (!points.length) return null;
 
   return (
-    <instancedMesh ref={meshRef} args={[undefined!, undefined!, points.length]}>
-      <circleGeometry args={[pointSize]} />
-      <meshBasicMaterial color={pointColor} />
-    </instancedMesh>
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          array={positions}
+          count={points.length}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial
+        size={pointSize}
+        sizeAttenuation={false}
+        color={pointColor as THREE.ColorRepresentation}
+        alphaTest={0.5}
+        onBeforeCompile={(shader) => {
+          shader.fragmentShader = shader.fragmentShader.replace(
+            "#include <clipping_planes_fragment>",
+            `#include <clipping_planes_fragment>
+              float dist = length(gl_PointCoord - vec2(0.5));
+              if (dist > 0.5) discard;`
+          );
+        }}
+      />
+    </points>
   );
 }
 

@@ -70,7 +70,7 @@ function App() {
       <div className="flex-1 relative">
         <Canvas
           orthographic
-          camera={{ position: [0, 0, 200], zoom: 40, up: [0, 0, 1] }}
+          camera={{ zoom: 40, position: [0, 0, 100] }}
           className="bg-[#f0f0f0]"
         >
           <OrbitControls
@@ -89,9 +89,8 @@ function App() {
             <ScatterPlot
               key={i}
               points={group.points}
-              pointSize={0.05}
+              pointSize={5.0}
               pointColor={group.color}
-              padding={0.1}
             />
           ))}
         </Canvas>
