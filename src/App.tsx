@@ -69,7 +69,7 @@ function App() {
         <Canvas
           orthographic
           camera={{ zoom: 40, position: [0, 0, 100] }}
-          className="bg-[#f0f0f0]"
+          className="bg-[#f2f2f2]"
         >
           <OrbitControls
             enableRotate={false}

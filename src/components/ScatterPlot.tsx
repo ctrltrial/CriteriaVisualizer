@@ -5,9 +5,16 @@ import { Text } from "@react-three/drei";
 import { MeshBasicMaterial } from "three";
 
 const textMaterial = new MeshBasicMaterial({
-  color: "#f0f0f0",
-  depthTest: false, // ✅ disable depth test so it draws on top
+  color: "#000000",
+  depthTest: false,
   transparent: true,
+});
+
+const backgroundMaterial = new MeshBasicMaterial({
+  color: "#ffffff",
+  transparent: true,
+  opacity: 0.25,
+  depthTest: false,
 });
 
 interface Point {
@@ -37,6 +44,7 @@ function ScatterPlot({
   labels = [],
 }: ScatterPlotProps) {
   const pointsRef = useRef<THREE.Points>(null);
+  const labelGroupRefs = useRef<(THREE.Group | null)[]>([]);
   const { camera } = useThree();
   const [initialBounds, setInitialBounds] = useState<{
     minX: number;
@@ -46,20 +54,17 @@ function ScatterPlot({
   } | null>(null);
   const [needsInitialFit, setNeedsInitialFit] = useState(true);
 
-  const labelRefs = useRef<(THREE.Object3D | null)[]>([]); // 👈 For scaling
-
+  // Keep labels screen-sized
   useFrame(() => {
     if (camera instanceof THREE.OrthographicCamera) {
-      const baseScale = 1 / camera.zoom;
-      labelRefs.current.forEach((label) => {
-        if (label) {
-          label.scale.setScalar(baseScale);
-        }
+      const scale = 1 / camera.zoom;
+      labelGroupRefs.current.forEach((group) => {
+        if (group) group.scale.setScalar(scale);
       });
     }
   });
 
-  // Calculate data bounds once on first mount
+  // Calculate data bounds once
   const bounds = useMemo(() => {
     if (!points.length || initialBounds) return initialBounds;
 
@@ -92,7 +97,7 @@ function ScatterPlot({
     return computedBounds;
   }, [points, initialBounds, padding]);
 
-  // Initial camera fit
+  // Initial camera setup
   useEffect(() => {
     if (
       !needsInitialFit ||
@@ -102,7 +107,8 @@ function ScatterPlot({
       return;
 
     const viewWidth = window.innerWidth;
-    const viewHeight = window.innerHeight - 56; // e.g. navbar offset
+    const viewHeight = window.innerHeight - 56;
+
     const dataWidth = bounds.maxX - bounds.minX;
     const dataHeight = bounds.maxY - bounds.minY;
     const dataAspect = dataWidth / dataHeight;
@@ -111,7 +117,7 @@ function ScatterPlot({
     const zoom =
       viewAspect > dataAspect ? viewHeight / dataHeight : viewWidth / dataWidth;
 
-    camera.zoom = zoom * 0.9; // 10% margin
+    camera.zoom = zoom * 0.9;
     camera.position.set(
       (bounds.maxX + bounds.minX) / 2,
       (bounds.maxY + bounds.minY) / 2,
@@ -121,7 +127,6 @@ function ScatterPlot({
     setNeedsInitialFit(false);
   }, [bounds, camera, needsInitialFit]);
 
-  // Convert points to a position buffer
   const positions = useMemo(() => {
     const arr = new Float32Array(points.length * 3);
     points.forEach(({ x, y }, i) => {
@@ -136,7 +141,6 @@ function ScatterPlot({
 
   return (
     <>
-      {/* Circle-shaped points that do NOT scale on zoom */}
       <points ref={pointsRef}>
         <bufferGeometry>
           <bufferAttribute
@@ -148,11 +152,10 @@ function ScatterPlot({
         </bufferGeometry>
         <pointsMaterial
           size={pointSize}
-          sizeAttenuation={false} // keeps same screen size on zoom
+          sizeAttenuation={false}
           color={pointColor as THREE.ColorRepresentation}
           alphaTest={0.5}
           onBeforeCompile={(shader) => {
-            // Make each point a circle by discarding corners
             shader.fragmentShader = shader.fragmentShader.replace(
               "#include <clipping_planes_fragment>",
               `#include <clipping_planes_fragment>
@@ -163,24 +166,37 @@ function ScatterPlot({
         />
       </points>
 
-      {/* Fixed-size 3D Text labels */}
-      {labels.map((label, i) => (
-        <Text
-          key={i}
-          ref={(el) => (labelRefs.current[i] = el)}
-          position={[label.x, label.y, 0.01]} // 👈 slight z-offset to bring forward
-          fontSize={20}
-          color="#000000"
-          anchorX="center"
-          anchorY="middle"
-          outlineColor="#1f2937"
-          lineHeight={1.1}
-          renderOrder={999} // 👈 force to render last
-          material={textMaterial} // 👈 ignore depth buffer (draw over points)
-        >
-          {label.text}
-        </Text>
-      ))}
+      {labels.map((label, i) => {
+        const labelText = label.text;
+        const paddingX = 0;
+        const paddingY = 0;
+        const textWidth = labelText.length * 12 + paddingX;
+        const textHeight = 40 + paddingY;
+
+        return (
+          <group
+            key={i}
+            ref={(el) => (labelGroupRefs.current[i] = el)}
+            position={[label.x, label.y, 0.01]}
+            renderOrder={999}
+          >
+            <mesh position={[0, 0, -0.01]} material={backgroundMaterial}>
+              <planeGeometry args={[textWidth, textHeight]} />
+            </mesh>
+            <Text
+              fontSize={20}
+              color="#1f2937"
+              anchorX="center"
+              anchorY="middle"
+              outlineColor="#1f2937"
+              outlineWidth={0.5}
+              material={textMaterial}
+            >
+              {labelText}
+            </Text>
+          </group>
+        );
+      })}
     </>
   );
 }
