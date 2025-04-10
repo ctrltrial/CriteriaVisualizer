@@ -92,7 +92,6 @@ function App() {
   const [minDataVal, setMinDataVal] = useState<number>(0);
   const [maxDataVal, setMaxDataVal] = useState<number>(0);
   const [range, setRange] = useState<[number, number]>([0, 0]);
-  // Note: Use string | undefined (instead of null) to match the prop type in ScatterPlot.
   const [hoveredCluster, setHoveredCluster] = useState<string | undefined>(undefined);
 
   useEffect(() => {

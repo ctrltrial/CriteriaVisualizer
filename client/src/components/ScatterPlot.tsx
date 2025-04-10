@@ -78,7 +78,12 @@ function ScatterPlot({
         minY: Math.min(acc.minY, Y),
         maxY: Math.max(acc.maxY, Y),
       }),
-      { minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity }
+      { 
+        minX: Infinity, 
+        maxX: -Infinity, 
+        minY: Infinity, 
+        maxY: -Infinity 
+      }
     );
     const xPad = (maxX - minX) * padding;
     const yPad = (maxY - minY) * padding;
@@ -138,14 +143,13 @@ function ScatterPlot({
 
     let updated = false;
     const time = state.clock.getElapsedTime();
-    const amplitude = 0.3; // 30% variation.
-    const frequency = 5;   // Oscillations per second.
-    const baselineFactor = 1.2; // Baseline size multiplier for highlighted points (20% bigger)
+    const amplitude = 0.5; // Variation
+    const frequency = 2.5;   // Oscillations per second.
+    const baselineFactor = 1.5; // Baseline size multiplier for highlighted points (20% bigger)
 
     for (let i = 0; i < points.length; i++) {
       let targetSize = pointSize;
       if (highlightedCluster && points[i].CLUSTER === highlightedCluster) {
-        // Apply the larger baseline and add pulsating effect.
         const baseline = pointSize * baselineFactor;
         const pulsate = 1 + amplitude * Math.sin(time * frequency + phaseOffsets[i]);
         targetSize = baseline * pulsate;
@@ -185,7 +189,6 @@ function ScatterPlot({
             color={pointColor as THREE.ColorRepresentation}
             alphaTest={0.5}
             onBeforeCompile={(shader) => {
-              // Inject the custom "aSize" attribute and update gl_PointSize accordingly.
               shader.vertexShader = 'attribute float aSize;\n' + shader.vertexShader;
               shader.vertexShader = shader.vertexShader.replace(
                 'gl_PointSize = size;',
@@ -202,7 +205,6 @@ function ScatterPlot({
         </points>
       </group>
   
-      {/* (Optional) Render additional labels if provided */}
       {labels.map((label, i) => {
         const labelText = label.text;
         const paddingX = 2;
