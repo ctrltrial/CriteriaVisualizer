@@ -37,7 +37,7 @@ interface ScatterPlotProps {
   stretchX?: number;
   stretchY?: number;
   labels?: Label[];
-  highlightedCluster?: string; // Accepts a string or undefined.
+  highlightedCluster?: string;
 }
 
 function ScatterPlot({

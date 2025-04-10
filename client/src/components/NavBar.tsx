@@ -1,6 +1,3 @@
-import React from "react";
-import { Button } from "./ui/button";
-
 function NavBar() {
   return (
     <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
