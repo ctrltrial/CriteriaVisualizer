@@ -28,6 +28,7 @@ function App() {
   const [hoveredCluster, setHoveredCluster] = useState<string | undefined>(
     undefined
   );
+  const [hasUserInteracted, setHasUserInteracted] = useState<boolean>(false);
 
   useEffect(() => {
     async function loadData() {
@@ -146,25 +147,28 @@ function App() {
             screenSpacePanning={true}
             maxAzimuthAngle={0}
             minAzimuthAngle={0}
+            onStart={() => setHasUserInteracted(true)}
           />
 
           {pointGroups.map((group, i) => (
             <ScatterPlot
-              key={filteredPoints.length + i} // Ensures a fresh geometry if the number of points changes.
+              key={`${filteredPoints.length}-${i}`}
               points={group.points}
               pointSize={15}
               pointColor={group.color}
               stretchX={1.2}
               highlightedCluster={hoveredCluster}
+              // Only auto-fit if the user hasn't interacted yet:
+              autoFit={!hasUserInteracted}
             />
           ))}
 
-          {labelData.map((label) => {
+          {labelData.map((label, index) => {
             const clusterId = String(label.CLUSTER);
             const isHovered = hoveredCluster === clusterId;
             return (
               <LabelWithBackground
-                key={clusterId}
+                key={`${label.CLUSTER}-${index}`}
                 label={label}
                 hovered={isHovered}
                 onPointerOver={handleLabelPointerOver(clusterId)}

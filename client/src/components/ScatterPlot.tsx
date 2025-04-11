@@ -1,10 +1,10 @@
 import * as THREE from "three";
-import { useEffect, useRef, useMemo, useState, useCallback } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
 import { MeshBasicMaterial } from "three";
 
-// Create materials outside the component if they are static (or use a hook if parameters change)
+// Create materials outside the component if they are static.
 const textMaterial = new MeshBasicMaterial({
   color: "#000000",
   depthTest: false,
@@ -39,18 +39,20 @@ export interface ScatterPlotProps {
   stretchY?: number;
   labels?: Label[];
   highlightedCluster?: string;
+  // New prop to control whether auto-fit should run.
+  autoFit?: boolean;
 }
 
 // Custom hook for auto-fitting the camera.
 function useFitCamera(
   computedBounds: ReturnType<typeof getComputedBounds>,
   padding: number,
-  needsFit: boolean
+  autoFit: boolean
 ) {
   const { camera } = useThree();
   useEffect(() => {
     if (
-      !needsFit ||
+      !autoFit ||
       !computedBounds ||
       !(camera instanceof THREE.OrthographicCamera)
     )
@@ -71,10 +73,10 @@ function useFitCamera(
       100
     );
     camera.updateProjectionMatrix();
-  }, [computedBounds, camera, needsFit]);
+  }, [computedBounds, camera, autoFit]);
 }
 
-// Helper to compute bounds; now separately exported in case it's used elsewhere.
+// Helper to compute bounds.
 export function getComputedBounds(points: Point[], padding: number) {
   if (!points.length) return null;
   const { minX, maxX, minY, maxY } = points.reduce(
@@ -105,11 +107,10 @@ function ScatterPlot({
   stretchY = 1,
   labels = [],
   highlightedCluster,
+  autoFit = true,
 }: ScatterPlotProps) {
   const pointsRef = useRef<THREE.Points>(null);
   const geometryRef = useRef<THREE.BufferGeometry>(null);
-  const labelGroupRefs = useRef<(THREE.Group | null)[]>([]);
-  const [needsInitialFit, setNeedsInitialFit] = useState(true);
 
   // Calculate positions for each point.
   const positions = useMemo(() => {
@@ -129,11 +130,8 @@ function ScatterPlot({
     [points, padding]
   );
 
-  // Use custom hook to auto-fit the camera once.
-  useFitCamera(computedBounds, padding, needsInitialFit);
-  useEffect(() => {
-    if (computedBounds) setNeedsInitialFit(false);
-  }, [computedBounds]);
+  // Use autoFit flag from props to decide whether to run auto-fit.
+  useFitCamera(computedBounds, padding, autoFit);
 
   // Buffer attribute for point sizes.
   const sizes = useMemo(() => {
@@ -227,12 +225,7 @@ function ScatterPlot({
       </group>
 
       {labels.map((label, i) => (
-        <group
-          key={i}
-          ref={(el) => (labelGroupRefs.current[i] = el)}
-          position={[label.x, label.y, 0.01]}
-          renderOrder={999}
-        >
+        <group key={i} position={[label.x, label.y, 0.01]} renderOrder={999}>
           <mesh position={[0, 0, -0.01]} material={backgroundMaterial}>
             <planeGeometry args={[label.text.length * 8 + 2, 20 + 2]} />
           </mesh>
