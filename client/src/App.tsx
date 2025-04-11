@@ -1,8 +1,8 @@
 import "./App.css";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { Canvas, ThreeEvent } from "@react-three/fiber";
-import { OrbitControls, Text } from "@react-three/drei";
-import { TOUCH, MOUSE, Shape } from "three";
+import { OrbitControls } from "@react-three/drei";
+import { TOUCH, MOUSE } from "three";
 
 import {
   fetchData,
@@ -15,76 +15,9 @@ import {
 } from "./utils/data";
 
 import NavBar from "./components/NavBar";
-import ScatterPlot from "./components/ScatterPlot";
+import ScatterPlot, { Point } from "./components/ScatterPlot";
 import RangeSlider from "./components/RangeSlider";
-
-// Helper: Creates a rounded rectangle shape centered at the origin.
-function createRoundedRectShape(width: number, height: number, radius: number) {
-  const shape = new Shape();
-  const hw = width / 2;
-  const hh = height / 2;
-  shape.moveTo(-hw + radius, -hh);
-  shape.lineTo(hw - radius, -hh);
-  shape.quadraticCurveTo(hw, -hh, hw, -hh + radius);
-  shape.lineTo(hw, hh - radius);
-  shape.quadraticCurveTo(hw, hh, hw - radius, hh);
-  shape.lineTo(-hw + radius, hh);
-  shape.quadraticCurveTo(-hw, hh, -hw, hh - radius);
-  shape.lineTo(-hw, -hh + radius);
-  shape.quadraticCurveTo(-hw, -hh, -hw + radius, -hh);
-  return shape;
-}
-
-/**
- * LabelWithBackground computes the dimensions of the background using the
- * text length and font size. It only renders the background when hovered.
- * The background is built from a rounded rectangle shape.
- */
-function LabelWithBackground({
-  label,
-  hovered,
-  onPointerOver,
-  onPointerOut,
-}: {
-  label: LabelItem;
-  hovered: boolean;
-  onPointerOver: (event: ThreeEvent<PointerEvent>) => void;
-  onPointerOut: (event: ThreeEvent<PointerEvent>) => void;
-}) {
-  const fontSize = hovered ? 4 : 3; // Use different font sizes for normal and hovered states.
-  const letterWidthFactor = 0.6; // Estimate the width of one character.
-  const horizontalMargin = hovered ? 3 : 2;
-  const verticalMargin = hovered ? 3 : 2;
-
-  // Compute approximate width and height of the text.
-  const computedWidth = label.LABEL.length * fontSize * letterWidthFactor + horizontalMargin;
-  const computedHeight = fontSize + verticalMargin;
-
-  const radius = Math.min(computedWidth, computedHeight) * 0.1;
-
-  const textColor = "#f0f0f0";
-  const bgColor = "#393b39";
-  const bgOpacity = hovered ? 0.95 : 0;
-
-  return (
-    <group
-      position={[label.X, label.Y, 1]}
-      renderOrder={999}
-      onPointerOver={onPointerOver}
-      onPointerOut={onPointerOut}
-    >
-      {hovered && (
-        <mesh position={[0, 0, -0.01]}>
-          <shapeGeometry args={[createRoundedRectShape(computedWidth, computedHeight, radius)]} />
-          <meshBasicMaterial color={bgColor} transparent opacity={bgOpacity} />
-        </mesh>
-      )}
-      <Text fontSize={fontSize} color={textColor} anchorX="center" anchorY="middle">
-        {label.LABEL}
-      </Text>
-    </group>
-  );
-}
+import LabelWithBackground from "./components/LabelWithBackground";
 
 function App() {
   const [data, setData] = useState<DataItem[]>([]);
@@ -92,7 +25,9 @@ function App() {
   const [minDataVal, setMinDataVal] = useState<number>(0);
   const [maxDataVal, setMaxDataVal] = useState<number>(0);
   const [range, setRange] = useState<[number, number]>([0, 0]);
-  const [hoveredCluster, setHoveredCluster] = useState<string | undefined>(undefined);
+  const [hoveredCluster, setHoveredCluster] = useState<string | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     async function loadData() {
@@ -123,11 +58,29 @@ function App() {
     loadLabels();
   }, []);
 
+  // Create event callbacks with useCallback
+  const handleLabelPointerOver = useCallback(
+    (clusterId: string) => (event: ThreeEvent<PointerEvent>) => {
+      setHoveredCluster(clusterId);
+      event.stopPropagation();
+    },
+    []
+  );
+
+  const handleLabelPointerOut = useCallback(
+    () => (event: ThreeEvent<PointerEvent>) => {
+      setHoveredCluster(undefined);
+      event.stopPropagation();
+    },
+    []
+  );
+
   const filteredPoints = useMemo(
     () => data.filter((d) => d.YEAR >= range[0] && d.YEAR <= range[1]),
     [data, range]
   );
 
+  // Define decade groups for color coding.
   const decadeGroups = useMemo(
     () => [
       { start: 1970, end: 1979, color: DECADE_COLORS["1970-1979"] },
@@ -140,6 +93,7 @@ function App() {
     []
   );
 
+  // Group points by decade.
   const pointGroups = useMemo(
     () =>
       decadeGroups.map(({ start, end, color }) => ({
@@ -149,7 +103,7 @@ function App() {
             X,
             Y,
             CLUSTER: String(CLUSTER),
-          })),
+          })) as Point[],
         color,
         label: `${start}${end === Infinity ? "+" : `-${end}`}`,
       })),
@@ -171,9 +125,7 @@ function App() {
     });
   }, [data, minDataVal, maxDataVal]);
 
-  if (data.length === 0) {
-    return <div>Loading...</div>;
-  }
+  if (data.length === 0) return <div>Loading...</div>;
 
   return (
     <div className="flex flex-col h-screen">
@@ -196,10 +148,9 @@ function App() {
             minAzimuthAngle={0}
           />
 
-          {/* Pass the hovered cluster state as a prop to ScatterPlot */}
           {pointGroups.map((group, i) => (
             <ScatterPlot
-              key={i}
+              key={filteredPoints.length + i} // Ensures a fresh geometry if the number of points changes.
               points={group.points}
               pointSize={15}
               pointColor={group.color}
@@ -208,7 +159,6 @@ function App() {
             />
           ))}
 
-          {/* Render labels with background highlight on hover */}
           {labelData.map((label) => {
             const clusterId = String(label.CLUSTER);
             const isHovered = hoveredCluster === clusterId;
@@ -217,22 +167,20 @@ function App() {
                 key={clusterId}
                 label={label}
                 hovered={isHovered}
-                onPointerOver={(event: ThreeEvent<PointerEvent>) => {
-                  setHoveredCluster(clusterId);
-                  event.stopPropagation();
-                }}
-                onPointerOut={(event: ThreeEvent<PointerEvent>) => {
-                  setHoveredCluster(undefined);
-                  event.stopPropagation();
-                }}
+                onPointerOver={handleLabelPointerOver(clusterId)}
+                onPointerOut={handleLabelPointerOut()}
               />
             );
           })}
         </Canvas>
+
         <div className="absolute top-4 right-4 bg-white bg-opacity-80 p-1 rounded shadow z-10">
           {pointGroups.map(({ label, color }) => (
             <div key={label} className="flex items-center my-1">
-              <div className="w-3 h-3 mr-2 rounded" style={{ backgroundColor: color }} />
+              <div
+                className="w-3 h-3 mr-2 rounded"
+                style={{ backgroundColor: color }}
+              />
               <span className="text-xs">{label}</span>
             </div>
           ))}
