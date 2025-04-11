@@ -162,7 +162,7 @@ function ScatterPlot({
     const time = state.clock.getElapsedTime();
     const amplitude = 0.5; // Variation
     const frequency = 2.5; // Oscillations per second.
-    const baselineFactor = 1.5; // Highlight baseline multiplier
+    const baselineFactor = 2; // Highlight baseline multiplier
 
     let updated = false;
     for (let i = 0; i < points.length; i++) {

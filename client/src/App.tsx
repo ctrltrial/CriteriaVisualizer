@@ -11,7 +11,6 @@ import {
   getMinVal,
   DataItem,
   LabelItem,
-  DECADE_COLORS,
 } from "./utils/data";
 
 import NavBar from "./components/NavBar";
@@ -82,22 +81,23 @@ function App() {
   );
 
   // Define decade groups for color coding.
-  const decadeGroups = useMemo(
+  const fiveYearGroups = useMemo(
     () => [
-      { start: 1970, end: 1979, color: DECADE_COLORS["1970-1979"] },
-      { start: 1980, end: 1989, color: DECADE_COLORS["1980-1989"] },
-      { start: 1990, end: 1999, color: DECADE_COLORS["1990-1999"] },
-      { start: 2000, end: 2009, color: DECADE_COLORS["2000-2009"] },
-      { start: 2010, end: 2019, color: DECADE_COLORS["2010-2019"] },
-      { start: 2020, end: Infinity, color: DECADE_COLORS["2020+"] },
+      { start: 1990, end: 1995, color: "#BC13FE" }, // Neon Red
+      { start: 1995, end: 2000, color: "#FF00FF" }, // Neon Orange
+      { start: 2000, end: 2005, color: "#04D9FF" }, // Neon Yellow
+      { start: 2005, end: 2010, color: "#39FF14" }, // Neon Green
+      { start: 2010, end: 2015, color: "#FFFF33" }, // Neon Blue
+      { start: 2015, end: 2020, color: "#FF8C00" }, // Neon Magenta
+      { start: 2020, end: 2025, color: "#FF073A" }, // Neon Violet
     ],
     []
   );
 
-  // Group points by decade.
+  // Group points by 5-year groups.
   const pointGroups = useMemo(
     () =>
-      decadeGroups.map(({ start, end, color }) => ({
+      fiveYearGroups.map(({ start, end, color }) => ({
         points: filteredPoints
           .filter((d) => d.YEAR >= start && d.YEAR < end)
           .map(({ X, Y, CLUSTER }) => ({
@@ -106,9 +106,9 @@ function App() {
             CLUSTER: String(CLUSTER),
           })) as Point[],
         color,
-        label: `${start}${end === Infinity ? "+" : `-${end}`}`,
+        label: `${start}-${end - 1}`,
       })),
-    [filteredPoints, decadeGroups]
+    [filteredPoints, fiveYearGroups]
   );
 
   const histogramData = useMemo(() => {
@@ -154,7 +154,7 @@ function App() {
             <ScatterPlot
               key={`${filteredPoints.length}-${i}`}
               points={group.points}
-              pointSize={15}
+              pointSize={10}
               pointColor={group.color}
               stretchX={1.2}
               highlightedCluster={hoveredCluster}
@@ -178,7 +178,7 @@ function App() {
           })}
         </Canvas>
 
-        <div className="absolute top-4 right-4 bg-white bg-opacity-80 p-1 rounded shadow z-10">
+        <div className="absolute bottom-4 right-4 bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10">
           {pointGroups.map(({ label, color }) => (
             <div key={label} className="flex items-center my-1">
               <div

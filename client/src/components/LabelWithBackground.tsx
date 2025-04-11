@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { ThreeEvent } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
 import { Shape } from "three";
@@ -40,19 +39,27 @@ export default function LabelWithBackground({
   onPointerOver,
   onPointerOut,
 }: LabelWithBackgroundProps) {
-  // Adjust font size and margins based on hover state.
+  // Adjust font size based on hover state.
   const fontSize = hovered ? 4 : 3;
   const letterWidthFactor = 0.6;
-  const horizontalMargin = hovered ? 3 : 2;
-  const verticalMargin = hovered ? 3 : 2;
+  // Instead of fixed margins, we calculate padding as a fraction of fontSize.
+  const horizontalPadding = fontSize * 0.5;
+  const verticalPadding = fontSize * 0.5;
 
+  // Compute the width and height of the text background.
   const computedWidth =
-    label.LABEL.length * fontSize * letterWidthFactor + horizontalMargin;
-  const computedHeight = fontSize + verticalMargin;
-  const radius = Math.min(computedWidth, computedHeight) * 0.1;
-  const textColor = "#f0f0f0";
-  const bgColor = "#393b39";
-  const bgOpacity = hovered ? 0.95 : 0;
+    label.LABEL.length * fontSize * letterWidthFactor + 2 * horizontalPadding;
+  const computedHeight = fontSize + 2 * verticalPadding;
+  const radius = Math.min(computedWidth, computedHeight) * 0.5;
+
+  // Background: Use a dark color for good contrast.
+  const bgColor = "#1a1a1a";
+  const bgOpacity = hovered ? 0.9 : 0.75;
+
+  // Text style: White text with a slight outline for separation.
+  const textColor = "#FFFFFF";
+  const outlineColor = "#000000";
+  const outlineWidth = hovered ? 0.5 : 0.3;
 
   return (
     <group
@@ -61,21 +68,19 @@ export default function LabelWithBackground({
       onPointerOver={onPointerOver}
       onPointerOut={onPointerOut}
     >
-      {hovered && (
-        <mesh position={[0, 0, -0.01]}>
-          <shapeGeometry
-            args={[
-              createRoundedRectShape(computedWidth, computedHeight, radius),
-            ]}
-          />
-          <meshBasicMaterial color={bgColor} transparent opacity={bgOpacity} />
-        </mesh>
-      )}
+      <mesh position={[0, 0, -0.01]}>
+        <shapeGeometry
+          args={[createRoundedRectShape(computedWidth, computedHeight, radius)]}
+        />
+        <meshBasicMaterial color={bgColor} transparent opacity={bgOpacity} />
+      </mesh>
       <Text
         fontSize={fontSize}
         color={textColor}
         anchorX="center"
         anchorY="middle"
+        outlineColor={outlineColor}
+        outlineWidth={outlineWidth}
       >
         {label.LABEL}
       </Text>

@@ -12,14 +12,6 @@ export interface LabelItem {
   Y: number;
 }
 
-export const DECADE_COLORS = {
-  "1970-1979": "#FFA500", 
-  "1980-1989": "#40E0D0",
-  "1990-1999": "#32CD32",
-  "2000-2009": "#1E90FF", 
-  "2010-2019": "#8A2BE2", 
-  "2020+": "#FFC107", 
-};
 
 export async function fetchData(): Promise<DataItem[]> {
   const response = await fetch("http://localhost:443/api/points");
