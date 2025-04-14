@@ -34,7 +34,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
             dataSource={data}
             onValueChanged={handleValueChanged}
             value={value}
-            containerBackgroundColor="#2D2D2D" // Dark background for the range selector
+            containerBackgroundColor="#2D2D2D" 
           >
             <Margin top={10} bottom={10} left={30} right={30} />
             <Scale startValue={lowerSliderBound} endValue={upperSliderBound} />
@@ -50,8 +50,6 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
                 type="bar"
                 argumentField="arg"
                 valueField="val"
-                // You can adjust the series color to complement the dark theme.
-                // color="#1976d2"
               />
             </Chart>
           </RangeSelector>
