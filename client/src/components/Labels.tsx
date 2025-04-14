@@ -96,6 +96,7 @@ function Labels({ labels, onHover, hoveredCluster }: LabelsProps) {
       element.style.backgroundColor = isHovered
         ? "rgb(0, 0, 0)"
         : "rgba(0, 0, 0, 0.6)";
+      element.style.zIndex = isHovered ? "1" : "0";
     });
   });
 
