@@ -16,7 +16,7 @@ import {
 import NavBar from "./components/NavBar";
 import ScatterPlot, { Point } from "./components/ScatterPlot";
 import RangeSlider from "./components/RangeSlider";
-import LabelWithBackground from "./components/LabelWithBackground";
+import Labels from "./components/Labels";
 
 function App() {
   const [data, setData] = useState<DataItem[]>([]);
@@ -163,19 +163,11 @@ function App() {
             />
           ))}
 
-          {labelData.map((label, index) => {
-            const clusterId = String(label.CLUSTER);
-            const isHovered = hoveredCluster === clusterId;
-            return (
-              <LabelWithBackground
-                key={`${label.CLUSTER}-${index}`}
-                label={label}
-                hovered={isHovered}
-                onPointerOver={handleLabelPointerOver(clusterId)}
-                onPointerOut={handleLabelPointerOut()}
-              />
-            );
-          })}
+          <Labels
+            labels={labelData}
+            onHover={setHoveredCluster}
+            hoveredCluster={hoveredCluster}
+          />
         </Canvas>
 
         <div className="absolute bottom-4 right-4 bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10">

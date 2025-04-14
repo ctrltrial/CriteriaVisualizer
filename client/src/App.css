@@ -133,3 +133,13 @@ html, body {
   /* margin-top: 8px; */
   border-radius: 3px;
 }
+
+.labels-container {
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.label-element {
+  user-select: none;
+  white-space: nowrap;
+}
