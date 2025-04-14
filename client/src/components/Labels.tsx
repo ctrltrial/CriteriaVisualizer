@@ -89,11 +89,13 @@ function Labels({ labels, onHover, hoveredCluster }: LabelsProps) {
       const x = (vector.x * 0.5 + 0.5) * window.innerWidth;
       const y = (-vector.y * 0.5 + 0.5) * window.innerHeight;
 
-      element.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`;
-      element.style.backgroundColor =
-        hoveredCluster === String(label.CLUSTER)
-          ? "rgb(0, 0, 0)"
-          : "rgba(0, 0, 0, 0.6)";
+      const isHovered = hoveredCluster === String(label.CLUSTER);
+      const scale = isHovered ? 1.1 : 1;
+
+      element.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px) scale(${scale})`;
+      element.style.backgroundColor = isHovered
+        ? "rgb(0, 0, 0)"
+        : "rgba(0, 0, 0, 0.6)";
     });
   });
 

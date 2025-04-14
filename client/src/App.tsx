@@ -140,7 +140,7 @@ function App() {
           <OrbitControls
             enableRotate={false}
             enableZoom={true}
-            zoomSpeed={1}
+            zoomSpeed={0.5}
             enablePan={true}
             mouseButtons={{ LEFT: MOUSE.PAN }}
             touches={{ ONE: TOUCH.PAN, TWO: TOUCH.DOLLY_PAN }}
