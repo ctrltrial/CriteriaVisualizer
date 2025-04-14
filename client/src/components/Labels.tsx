@@ -92,7 +92,7 @@ function Labels({ labels, onHover, hoveredCluster }: LabelsProps) {
       element.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`;
       element.style.backgroundColor =
         hoveredCluster === String(label.CLUSTER)
-          ? "rgba(255, 255, 255, 0.2)"
+          ? "rgb(0, 0, 0)"
           : "rgba(0, 0, 0, 0.6)";
     });
   });

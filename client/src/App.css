@@ -142,4 +142,10 @@ html, body {
 .label-element {
   user-select: none;
   white-space: nowrap;
+  transform-origin: center;
+  transition: transform 0.2s ease-out, background-color 0.2s ease-out;
+}
+
+.label-element.hovered {
+  transform: scale(1.1);
 }
