@@ -12,6 +12,12 @@ export interface LabelItem {
   Y: number;
 }
 
+export interface RankItem {
+  CLUSTER: number;
+  LABEL: string;
+  RANK: number;
+}
+
 
 export async function fetchData(): Promise<DataItem[]> {
   const response = await fetch("http://localhost:443/api/points");
@@ -19,6 +25,11 @@ export async function fetchData(): Promise<DataItem[]> {
 }
 
 export async function fetchLabel(): Promise<LabelItem[]> {
+  const response = await fetch("http://localhost:443/api/labels");
+  return await response.json(); 
+}
+
+export async function fetchRank(): Promise<RankItem[]> {
   const response = await fetch("http://localhost:443/api/labels");
   return await response.json(); 
 }

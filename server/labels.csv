@@ -1,43 +1,42 @@
-CLUSTER,LABEL,X,Y
-0,Age Requirements,12.781787006155753,-66.0295181121781
-1,Gender and Reproductive Status,14.65783452584463,-52.51789235507741
-2,Metastatic Disease Confirmation,17.732846131321597,20.961232919500187
-3,Breast Cancer Diagnosis Requirements,50.76914313979361,-1.1717305185702154
-4,Stable brain metastases allowed,-20.402349891201144,12.720161574381974
-5,Treatment Tolerance and Recovery,-12.811754670222944,29.43114009602064
-6,ECOG Performance Status Criteria,-15.49179933847903,70.42640901638279
-7,Organ Function Requirements,-61.92910248908838,3.6858367324185313
-9,Normal liver function criteria required,75.96246510662445,-9.08608227076044
-10,Normal Laboratory Values,-23.918161744064427,5.021143211359563
-11,Contraception and Pregnancy Requirements,55.914352429230405,42.75643338782404
-12,Adequate coagulation function required,-52.16591796875,-5.944617563754667
-13,Life Expectancy Requirements,52.697471007663225,-56.07014672537036
-14,Tumor Tissue and Biopsy Requirements,-29.902361330890017,-7.200298617262669
-15,Ability to swallow oral medications,-62.47223907580479,-23.32077022250608
-16,Informed Consent Requirements,-50.418580670812965,-45.83115516140139
-17,Histologically confirmed invasive breast cancer,6.5202755945539135,-27.154958273592367
-18,Measurable Disease Criteria,-36.1119357499087,28.22309958015879
-19,Prior Treatment Conditions,20.984668862043364,5.786396176402537
-20,Minimum LVEF of 50% required,-81.87673015594483,-16.647156143188475
-21,Diagnosed breast cancer patients only,11.144446635212022,-16.323317645610064
-23,Willingness and ability to comply,-36.79711516158699,-29.890856899729595
-25,Absolute neutrophil count ≥ 1.5 x 10^9/L,-55.67573691943644,53.38193480822505
-26,Minimum platelet count requirement,71.20134768925661,14.508238535400825
-27,Platinum-resistant or recurrent ovarian cancer,33.54776784287932,29.53276991060642
-28,Hemoglobin and albumin thresholds,51.81887028849544,-33.46422920592677
-32,"Early-stage, non-metastatic breast cancer",-1.6358298763117325,-15.143705598963132
-36,Chemotherapy eligibility for breast cancer,10.33343413698318,-2.239227505118099
-37,Good performance status required,-27.94934036750202,68.9710816375969
-38,Adequate cardiac function (LVEF ≥ 50%),-77.50097406827487,-22.05659827819237
-40,Recovery and washout from treatments,-8.104487410386403,1.6960703882409467
-41,Hormone receptor status assessment required,54.354903737104486,-21.107685929513984
-43,Postmenopausal women with defined criteria,34.99642676892488,-48.67372930360877
-44,Documented disease progression after treatment,-3.770091021203832,18.09925422643962
-45,No evidence of disease recurrence,-5.3711599350528685,-5.964941406354113
-47,Dose escalation and expansion eligibility,-0.6547221936279638,-34.112395787389026
-48,Genetic mutation or biomarker presence,26.141550808022284,18.88603084773616
-49,Diverse cancer types and treatment histories,20.985349303886984,6.93990834115663
-50,BMI between 18 and 32 kg/m²,-74.1948287997927,42.98375647408621
-51,All criteria must be met,-13.077964078428018,-39.85461741487185
-53,Hormonal therapy eligibility and management,22.435540635864456,-27.833346400013216
-55,Controlled viral infections required,-48.0388822879921,9.30643519901094
+CLUSTER,LABEL,X,Y,RANK
+0,Age Requirements,12.781787006155753,-66.0295181121781,3
+1,Gender and Reproductive Status,14.65783452584463,-52.51789235507741,31
+2,Metastatic Disease Confirmation,17.732846131321597,20.961232919500187,2
+3,Breast Cancer Diagnosis Requirements,50.76914313979361,-1.1717305185702154,9
+4,Stable brain metastases allowed,-20.402349891201144,12.720161574381974,32
+5,Treatment Tolerance and Recovery,-12.811754670222944,29.43114009602064,10
+6,ECOG Performance Status Criteria,-15.49179933847903,70.42640901638279,5
+7,Organ Function Requirements,-61.92910248908838,3.6858367324185313,4
+9,Normal liver function criteria required,75.96246510662445,-9.08608227076044,28
+10,Normal Laboratory Values,-23.918161744064427,5.021143211359563,14
+11,Contraception and Pregnancy Requirements,55.914352429230405,42.75643338782404,11
+12,Adequate coagulation function required,-52.16591796875,-5.944617563754667,6
+13,Life Expectancy Requirements,52.697471007663225,-56.07014672537036,33
+14,Tumor Tissue and Biopsy Requirements,-29.902361330890017,-7.200298617262669,13
+15,Ability to swallow oral medications,-62.47223907580479,-23.32077022250608,12
+16,Informed Consent Requirements,-50.418580670812965,-45.83115516140139,39
+17,Histologically confirmed invasive breast cancer,6.5202755945539135,-27.154958273592367,7
+18,Measurable Disease Criteria,-36.1119357499087,28.22309958015879,30
+19,Prior Treatment Conditions,20.984668862043364,5.786396176402537,8
+20,Minimum LVEF of 50% required,-81.87673015594483,-16.647156143188475,1
+21,Diagnosed breast cancer patients only,11.144446635212022,-16.323317645610064,36
+23,Willingness and ability to comply,-36.79711516158699,-29.890856899729595,22
+25,Absolute neutrophil count ≥ 1.5 x 10^9/L,-55.67573691943644,53.38193480822505,27
+26,Minimum platelet count requirement,71.20134768925661,14.508238535400825,18
+28,Hemoglobin and albumin thresholds,51.81887028849544,-33.46422920592677,15
+32,"Early-stage, non-metastatic breast cancer",-1.6358298763117325,-15.143705598963132,24
+36,Chemotherapy eligibility for breast cancer,10.33343413698318,-2.239227505118099,29
+37,Good performance status required,-27.94934036750202,68.9710816375969,34
+38,Adequate cardiac function (LVEF ≥ 50%),-77.50097406827487,-22.05659827819237,26
+40,Recovery and washout from treatments,-8.104487410386403,1.6960703882409467,23
+41,Hormone receptor status assessment required,54.354903737104486,-21.107685929513984,17
+43,Postmenopausal women with defined criteria,34.99642676892488,-48.67372930360877,35
+44,Documented disease progression after treatment,-3.770091021203832,18.09925422643962,25
+45,No evidence of disease recurrence,-5.3711599350528685,-5.964941406354113,19
+47,Dose escalation and expansion eligibility,-0.6547221936279638,-34.112395787389026,21
+48,Genetic mutation or biomarker presence,26.141550808022284,18.88603084773616,37
+49,Diverse cancer types and treatment histories,20.985349303886984,6.93990834115663,20
+50,BMI between 18 and 32 kg/m²,-74.1948287997927,42.98375647408621,40
+51,All criteria must be met,-13.077964078428018,-39.85461741487185,38
+53,Hormonal therapy eligibility and management,22.435540635864456,-27.833346400013216,41
+55,Controlled viral infections required,-48.0388822879921,9.30643519901094,16

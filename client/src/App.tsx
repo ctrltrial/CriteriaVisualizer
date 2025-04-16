@@ -7,20 +7,24 @@ import { TOUCH, MOUSE } from "three";
 import {
   fetchData,
   fetchLabel,
+  fetchRank,
   getMaxVal,
   getMinVal,
   DataItem,
   LabelItem,
+  RankItem,
 } from "./utils/data";
 
 import NavBar from "./components/NavBar";
 import ScatterPlot, { Point } from "./components/ScatterPlot";
 import RangeSlider from "./components/RangeSlider";
 import Labels from "./components/Labels";
+import { InfoBox } from "./components/InfoBox";
 
 function App() {
   const [data, setData] = useState<DataItem[]>([]);
   const [labelData, setLabelData] = useState<LabelItem[]>([]);
+  const [rankData, setRankData] = useState<RankItem[]>([]);
   const [minDataVal, setMinDataVal] = useState<number>(0);
   const [maxDataVal, setMaxDataVal] = useState<number>(0);
   const [range, setRange] = useState<[number, number]>([0, 0]);
@@ -56,6 +60,18 @@ function App() {
       }
     }
     loadLabels();
+  }, []);
+
+  useEffect(() => {
+    async function loadRanks() {
+      try {
+        const fetchedRanks = await fetchRank();
+        setRankData(fetchedRanks);
+      } catch (error) {
+        console.error("Error fetching ranks:", error);
+      }
+    }
+    loadRanks();
   }, []);
 
   // Create event callbacks with useCallback
@@ -169,6 +185,10 @@ function App() {
             hoveredCluster={hoveredCluster}
           />
         </Canvas>
+
+        <InfoBox
+          rankData={rankData}
+        ></InfoBox>
 
         <div className="absolute bottom-4 right-4 bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10">
           {pointGroups.map(({ label, color }) => (
