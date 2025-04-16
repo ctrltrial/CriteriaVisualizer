@@ -66,6 +66,11 @@ function useFitCamera(
     const zoom =
       viewAspect > dataAspect ? viewHeight / dataHeight : viewWidth / dataWidth;
     camera.zoom = zoom * 0.9;
+    camera.position.set(
+      (computedBounds.maxX + computedBounds.minX) / 2,
+      (computedBounds.maxY + computedBounds.minY) / 2,
+      100
+    );
     
     camera.updateProjectionMatrix();
   }, [computedBounds, camera, autoFit]);
@@ -126,7 +131,7 @@ function ScatterPlot({
   );
 
   // Use autoFit flag from props to decide whether to run auto-fit.
-  useFitCamera(computedBounds, autoFit);
+  useFitCamera(computedBounds, autoFit)
 
   // Buffer attribute for point sizes.
   const sizes = useMemo(() => {
