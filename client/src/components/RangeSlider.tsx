@@ -35,6 +35,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
             onValueChanged={handleValueChanged}
             value={value}
             containerBackgroundColor="#2D2D2D" 
+            size={{ height: 125 }}
           >
             <Margin top={10} bottom={10} left={30} right={30} />
             <Scale startValue={lowerSliderBound} endValue={upperSliderBound} />

@@ -188,7 +188,9 @@ function App() {
 
         <InfoBox
           rankData={rankData}
-        ></InfoBox>
+          hoveredCluster={hoveredCluster}
+          setHoveredCluster={setHoveredCluster}
+        />
 
         <div className="absolute bottom-4 right-4 bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10">
           {pointGroups.map(({ label, color }) => (
