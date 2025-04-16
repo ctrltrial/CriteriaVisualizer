@@ -30,7 +30,7 @@ export async function fetchLabel(): Promise<LabelItem[]> {
 }
 
 export async function fetchRank(): Promise<RankItem[]> {
-  const response = await fetch("http://localhost:443/api/labels");
+  const response = await fetch("http://localhost:443/api/ranks");
   return await response.json(); 
 }
 

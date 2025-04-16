@@ -27,7 +27,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
   };
 
   return (
-    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 w-[65%]">
+    <div className="fixed bottom-4 left-1/2 transform -translate-x-[39%] z-50 w-[65%]">
       <div className="rounded-lg shadow-2xl">
         <div className="bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20">
           <RangeSelector
