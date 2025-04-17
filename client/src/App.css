@@ -149,3 +149,14 @@ html, body {
 .label-element.hovered {
   transform: scale(1.1);
 }
+
+.no-scrollbar {
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+
+}
+.no-scrollbar::-webkit-scrollbar {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  display: none;
+}

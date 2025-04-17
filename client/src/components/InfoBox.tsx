@@ -21,8 +21,8 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
         Common Breast Cancer Clinical Trial Criteria
       </h3>
 
-      {/* Scrollable List */}
-      <div className="overflow-y-auto max-h-[calc(40vh-6rem)] flex-grow">
+      {/* Scrollable List (with hidden scrollbar) */}
+      <div className="overflow-y-auto no-scrollbar max-h-[calc(40vh-6rem)] flex-grow">
         <ul className="text-xs pl-1">
           {sortedRanks.map(({ CLUSTER, LABEL, RANK }) => (
             <li
@@ -46,7 +46,5 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
         Scroll for more ▼
       </div>
     </div>
-
   );
 };
-

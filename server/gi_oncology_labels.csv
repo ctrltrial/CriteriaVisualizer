@@ -1,0 +1,21 @@
+CLUSTER,LABEL,X,Y,RANK
+0,Age Criteria for Participation,53.62199531338079,65.18635305079019,1
+1,Informed Consent Requirements,-8.15078622693059,83.38461674985481,3
+2,Effective Contraception Requirement,-23.92876191970405,-77.54825671368053,5
+4,Willingness and ability to comply,-25.04939650297165,62.28576612472534,13
+7,Advanced or metastatic cancer eligibility,32.38256032484413,6.334235762350658,9
+8,Failed prior therapies or no options,8.854989836583416,4.916510193462831,14
+10,Adequate Organ Function Requirements,-72.97369014460865,4.86904273309813,19
+12,ECOG Performance Status Criteria,82.64688729102458,-23.787063132035076,8
+15,Recovery from prior cancer treatment,-1.217577296502002,-13.160613619808585,6
+18,Adequate hepatic function criteria,-82.25780661631438,-18.45471687640174,15
+19,Confirmed diagnosis of hepatocellular carcinoma,37.49958623465845,-44.58574438903291,4
+20,Measurable Disease Criteria,0.9058972547888456,-47.8380896218458,12
+22,Histologically confirmed metastatic colorectal cancer,26.502736396530047,21.826920057640596,2
+23,Prior treatment failure in CRC,17.053694992906905,10.63279237852377,20
+39,Histologically confirmed advanced/metastatic cancer,49.15127785422585,8.156912205706943,17
+40,"Advanced, unresectable, or refractory solid tumors",36.92437918644685,-0.0479052823896591,7
+47,Minimum platelet count requirement,-40.56937542869931,-49.20527202061245,18
+57,Unresectable or metastatic pancreatic cancer,44.69217351875683,-9.885629879366054,16
+66,Must meet all eligibility criteria,-2.956393800290494,48.9854873326318,10
+72,Relapsed or refractory multiple myeloma,-22.25188025053557,3.4026493915432208,11
