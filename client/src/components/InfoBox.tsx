@@ -15,14 +15,14 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
   const sortedRanks = rankData.slice().sort((a, b) => a.RANK - b.RANK);
 
   return (
-    <div className="absolute top-4 left-4 bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10 max-h-[94vh]">
+    <div className="absolute bottom-4 left-4 bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10 max-h-[40vh] flex flex-col">
       {/* Header stays fixed */}
       <h3 className="text-sm font-semibold mb-2">
         Common Breast Cancer Clinical Trial Criteria
       </h3>
 
-      {/* Only this DIV scrolls */}
-      <div className="overflow-y-auto max-h-[calc(94vh-3rem)]">
+      {/* Scrollable List */}
+      <div className="overflow-y-auto max-h-[calc(40vh-6rem)] flex-grow">
         <ul className="text-xs pl-1">
           {sortedRanks.map(({ CLUSTER, LABEL, RANK }) => (
             <li
@@ -40,7 +40,13 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
           ))}
         </ul>
       </div>
+
+      {/* Bottom-Aligned Content */}
+      <div className="mt-2 text-[10px] text-white/50">
+        Scroll for more ▼
+      </div>
     </div>
+
   );
 };
 

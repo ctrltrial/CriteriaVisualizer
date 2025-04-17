@@ -19,18 +19,18 @@ export interface RankItem {
 }
 
 
-export async function fetchData(): Promise<DataItem[]> {
-  const response = await fetch("http://localhost:443/api/points");
+export async function fetchData(plotType: string): Promise<DataItem[]> {
+  const response = await fetch(`http://localhost:443/api/points?plot=${encodeURIComponent(plotType)}`);
   return await response.json(); 
 }
 
-export async function fetchLabel(): Promise<LabelItem[]> {
-  const response = await fetch("http://localhost:443/api/labels");
+export async function fetchLabel(plotType: string): Promise<LabelItem[]> {
+  const response = await fetch(`http://localhost:443/api/labels?plot=${encodeURIComponent(plotType)}`);
   return await response.json(); 
 }
 
-export async function fetchRank(): Promise<RankItem[]> {
-  const response = await fetch("http://localhost:443/api/ranks");
+export async function fetchRank(plotType: string): Promise<RankItem[]> {
+  const response = await fetch(`http://localhost:443/api/ranks?plot=${encodeURIComponent(plotType)}`);
   return await response.json(); 
 }
 

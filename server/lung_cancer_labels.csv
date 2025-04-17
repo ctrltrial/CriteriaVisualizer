@@ -1,0 +1,28 @@
+CLUSTER,LABEL,X,Y,RANK
+0,Age Requirements for Participation,-69.39864038472152,-2.3522840753123533,4
+4,"Performance status ≤ 2, life expectancy",-28.12283604674869,59.09596437878079,26
+7,Effective Contraception and Pregnancy Prevention,-72.81044337697273,-45.994139859276096,12
+8,Informed Consent Requirements,-20.75369132511199,-72.31017318982927,16
+9,Prior Treatment and Therapy Requirements,51.33922683519383,14.609693409497556,8
+12,Measurable Disease Criteria,-35.85744355529188,27.16207672793224,17
+13,Tumor tissue availability and consent,-5.105293039177709,3.6841115915654776,20
+14,ECOG Performance Status Criteria,-34.89479074624306,79.14814157595579,3
+19,Willingness and ability to comply,-21.65998810295045,-51.66069250031719,6
+20,Histologically confirmed lung cancer diagnosis,1.8189015557667367,67.53924474501072,5
+24,"Advanced, untreated non-small cell lung cancer",36.936874294786584,46.252868292587145,21
+26,Availability of tumor tissue samples,-0.487891840994358,-2.366211637996137,25
+31,Adequate organ and hematologic function,37.29966769748264,-55.85041797779225,2
+32,"Advanced solid tumors, refractory to treatment",27.4050147369504,29.399924421310423,9
+39,"Advanced, unresectable, or metastatic tumors",17.995883796029464,28.52054019174176,1
+40,Refractory or intolerant to standard therapy,31.92070312328167,6.601060738837397,19
+41,Minimum Life Expectancy Criteria,-78.33118290884684,41.12389537454889,27
+43,Liver function criteria for eligibility,3.878939878711334,-88.40720924964317,22
+51,Recovery from prior treatment toxicities,84.26871035649226,-14.136414041885963,23
+58,Negative pregnancy test and contraception,-53.12755507317142,-45.03102095230766,13
+59,Histologically confirmed advanced non-small cell lung cancer,14.963090703367644,65.68888542314643,10
+60,EGFR mutation treatment failure criteria,70.10093647325543,31.13646337347971,15
+61,Eligibility for advanced cancer treatment,33.22653400705707,16.25600735554772,24
+62,No prior systemic cancer treatment,66.03223750704811,1.747717771531334,11
+66,Age and weight criteria,-69.75164215237487,-7.352720717150791,7
+70,Adequate organ function required,16.9427846343429,-63.318522954870154,18
+77,Required washout period from therapy,63.50872146606445,-16.938771879196167,14

@@ -1,6 +1,6 @@
 import "./App.css";
-import { useState, useMemo, useEffect, useCallback } from "react";
-import { Canvas, ThreeEvent } from "@react-three/fiber";
+import { useState, useMemo, useEffect } from "react";
+import { Canvas, } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { TOUCH, MOUSE } from "three";
 
@@ -20,6 +20,7 @@ import ScatterPlot, { Point } from "./components/ScatterPlot";
 import RangeSlider from "./components/RangeSlider";
 import Labels from "./components/Labels";
 import { InfoBox } from "./components/InfoBox";
+import { PlotToggle } from "./components/NavBar";
 
 function App() {
   const [data, setData] = useState<DataItem[]>([]);
@@ -32,11 +33,17 @@ function App() {
     undefined
   );
   const [hasUserInteracted, setHasUserInteracted] = useState<boolean>(false);
+  const [activePlot, setActivePlot] = useState("Breast Cancer");
 
+  useEffect(() => {
+    setHasUserInteracted(false);
+    setHoveredCluster(undefined);
+  }, [activePlot]);
+  
   useEffect(() => {
     async function loadData() {
       try {
-        const fetchedData = await fetchData();
+        const fetchedData = await fetchData(activePlot);
         setData(fetchedData);
         const minVal = getMinVal(fetchedData);
         const maxVal = getMaxVal(fetchedData);
@@ -48,48 +55,31 @@ function App() {
       }
     }
     loadData();
-  }, []);
+  }, [activePlot]);
 
   useEffect(() => {
     async function loadLabels() {
       try {
-        const fetchedLabels = await fetchLabel();
+        const fetchedLabels = await fetchLabel(activePlot);
         setLabelData(fetchedLabels);
       } catch (error) {
         console.error("Error fetching labels:", error);
       }
     }
     loadLabels();
-  }, []);
+  }, [activePlot]);
 
   useEffect(() => {
     async function loadRanks() {
       try {
-        const fetchedRanks = await fetchRank();
+        const fetchedRanks = await fetchRank(activePlot);
         setRankData(fetchedRanks);
       } catch (error) {
         console.error("Error fetching ranks:", error);
       }
     }
     loadRanks();
-  }, []);
-
-  // Create event callbacks with useCallback
-  const handleLabelPointerOver = useCallback(
-    (clusterId: string) => (event: ThreeEvent<PointerEvent>) => {
-      setHoveredCluster(clusterId);
-      event.stopPropagation();
-    },
-    []
-  );
-
-  const handleLabelPointerOut = useCallback(
-    () => (event: ThreeEvent<PointerEvent>) => {
-      setHoveredCluster(undefined);
-      event.stopPropagation();
-    },
-    []
-  );
+  }, [activePlot]);
 
   const filteredPoints = useMemo(
     () => data.filter((d) => d.YEAR >= range[0] && d.YEAR <= range[1]),
@@ -168,7 +158,7 @@ function App() {
 
           {pointGroups.map((group, i) => (
             <ScatterPlot
-              key={`${filteredPoints.length}-${i}`}
+              key={`${activePlot}-${i}`}
               points={group.points}
               pointSize={10}
               pointColor={group.color}
@@ -191,8 +181,13 @@ function App() {
           hoveredCluster={hoveredCluster}
           setHoveredCluster={setHoveredCluster}
         />
+        <PlotToggle
+          activePlot={activePlot}
+          setActivePlot={setActivePlot}
+          plots={["Breast Cancer", "Lung Cancer", "GI Oncology"]}
+        />
 
-        <div className="absolute bottom-4 right-4 bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10">
+        <div className="absolute bottom-4 right-4 bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10 max-h-[25vh]">
           {pointGroups.map(({ label, color }) => (
             <div key={label} className="flex items-center my-1">
               <div

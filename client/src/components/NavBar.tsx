@@ -26,4 +26,34 @@ function NavBar() {
   );
 }
 
+interface GraphToggleProps {
+  activePlot: string;
+  setActivePlot: (plot: string) => void;
+  plots: string[];
+}
+
+
+export const PlotToggle: React.FC<GraphToggleProps> = ({ activePlot, setActivePlot, plots }) => {
+  return (
+    <div className="absolute top-4 left-4 z-50 bg-[rgba(30,30,30,0.5)] backdrop-blur rounded p-2 shadow-md">
+      <div className="flex space-x-2">
+        {plots.map((plot) => (
+          <button
+            key={plot}
+            onClick={() => setActivePlot(plot)}
+            className={`text-xs px-3 py-1 rounded transition-all
+              ${
+                activePlot === plot
+                  ? "bg-white text-black font-semibold"
+                  : "bg-white/10 text-white hover:bg-white/20"
+              }`}
+          >
+            {plot}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export default NavBar;

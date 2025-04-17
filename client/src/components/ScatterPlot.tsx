@@ -187,7 +187,7 @@ function ScatterPlot({
     <>
       <group scale={[stretchX, stretchY, 1]}>
         <points ref={pointsRef}>
-          <bufferGeometry ref={geometryRef}>
+          <bufferGeometry key={points.length} ref={geometryRef}>
             <bufferAttribute
               attach="attributes-position"
               array={positions}
