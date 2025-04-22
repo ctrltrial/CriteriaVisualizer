@@ -188,7 +188,7 @@ function App() {
           plots={["Breast Cancer", "Lung Cancer", "GI Oncology"]}
         />
 
-        <div className="absolute bottom-4 right-4 bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10 max-h-[25vh]">
+        <div className="absolute right-4 bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10 top-4 lg:top-auto lg:bottom-4">
           {pointGroups.map(({ label, color }) => (
             <div key={label} className="flex items-center my-1">
               <div

@@ -3,7 +3,7 @@ function NavBar() {
     <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
       <div className="rounded-lg shadow-2xl">
         <div className="bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 px-6 py-2">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 whitespace-nowrap">
             {/* <a
               href="https://ctrltrial.com"
               target="_blank"
@@ -32,11 +32,14 @@ interface GraphToggleProps {
   plots: string[];
 }
 
-
-export const PlotToggle: React.FC<GraphToggleProps> = ({ activePlot, setActivePlot, plots }) => {
+export const PlotToggle: React.FC<GraphToggleProps> = ({
+  activePlot,
+  setActivePlot,
+  plots,
+}) => {
   return (
     <div className="absolute top-4 left-4 z-50 bg-[rgba(30,30,30,0.5)] backdrop-blur rounded p-2 shadow-md">
-      <div className="flex space-x-2">
+      <div className="flex flex-col lg:flex-row gap-2 z-10">
         {plots.map((plot) => (
           <button
             key={plot}

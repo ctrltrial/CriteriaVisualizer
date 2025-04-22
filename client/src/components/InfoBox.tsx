@@ -17,7 +17,7 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
   const sortedRanks = rankData.slice().sort((a, b) => a.RANK - b.RANK);
 
   return (
-    <div className="absolute bottom-4 left-4 bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10 max-h-[40vh] flex flex-col">
+    <div className="absolute bottom-4 left-4 backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10 max-h-[40vh] flex flex-col sm:w-[25%] lg:w-[20%]">
       {/* Header stays fixed */}
       <h3 className="text-sm font-semibold mb-2">
         {`Common ${activePlot} Clinical Trial Criteria`}
