@@ -5,12 +5,14 @@ interface InfoBoxProps {
   rankData: RankItem[];
   hoveredCluster?: string;
   setHoveredCluster: (cluster: string | undefined) => void;
+  activePlot: string; // new prop
 }
 
 export const InfoBox: React.FC<InfoBoxProps> = ({
   rankData,
   hoveredCluster,
   setHoveredCluster,
+  activePlot, // new prop
 }) => {
   const sortedRanks = rankData.slice().sort((a, b) => a.RANK - b.RANK);
 
@@ -18,7 +20,7 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
     <div className="absolute bottom-4 left-4 bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10 max-h-[40vh] flex flex-col">
       {/* Header stays fixed */}
       <h3 className="text-sm font-semibold mb-2">
-        Common Breast Cancer Clinical Trial Criteria
+        {`Common ${activePlot} Clinical Trial Criteria`}
       </h3>
 
       {/* Scrollable List (with hidden scrollbar) */}
@@ -42,9 +44,7 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
       </div>
 
       {/* Bottom-Aligned Content */}
-      <div className="mt-2 text-[10px] text-white/50">
-        Scroll for more ▼
-      </div>
+      <div className="mt-2 text-[10px] text-white/50">Scroll for more ▼</div>
     </div>
   );
 };

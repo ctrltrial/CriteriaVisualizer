@@ -1,6 +1,6 @@
 import "./App.css";
 import { useState, useMemo, useEffect } from "react";
-import { Canvas, } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { TOUCH, MOUSE } from "three";
 
@@ -39,7 +39,7 @@ function App() {
     setHasUserInteracted(false);
     setHoveredCluster(undefined);
   }, [activePlot]);
-  
+
   useEffect(() => {
     async function loadData() {
       try {
@@ -180,6 +180,7 @@ function App() {
           rankData={rankData}
           hoveredCluster={hoveredCluster}
           setHoveredCluster={setHoveredCluster}
+          activePlot={activePlot}
         />
         <PlotToggle
           activePlot={activePlot}
