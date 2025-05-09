@@ -53,7 +53,9 @@ app.get("/api/labels", async (req, res) => {
     try {
       const fileName = getFileName(req.query.plot, "labels");
 
+      console.log("Reading file:", fileName);
       const result = await readCSV(fileName);
+      console.log("CSV rows:", result.slice(0, 3)); // show first few rows
       const labels = result.map(row => ({
         CLUSTER: Number(row.CLUSTER),
         LABEL: row.LABEL,
@@ -62,6 +64,7 @@ app.get("/api/labels", async (req, res) => {
       }));
       res.json(labels);
     } catch (err) {
+      console.log("Error Fetching Labels");
       console.error(err.message);
     }
 });
@@ -81,4 +84,4 @@ app.get("/api/ranks", async (req, res) => {
     }
 });
 
-app.listen(443, () => { console.log("Server started on port 443") });
+app.listen(4000, () => { console.log("Server started on port 4000") });
