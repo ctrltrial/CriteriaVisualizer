@@ -190,8 +190,6 @@ function App() {
     });
   }, [data, minDataVal, maxDataVal]);
 
-  if (data.length === 0) return <div>Loading...</div>;
-
   return (
     <div className="flex flex-col h-screen">
       <NavBar />

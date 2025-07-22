@@ -18,20 +18,31 @@ export interface RankItem {
   RANK: number;
 }
 
+// Use relative path to work in both local dev and production
+const API_BASE =
+  window.location.hostname === "localhost"
+    ? "http://localhost:4000/api"
+    : "http://3.15.150.112:4000/api"; // my ec2 host address
 
 export async function fetchData(plotType: string): Promise<DataItem[]> {
-  const response = await fetch(`http://localhost:443/api/points?plot=${encodeURIComponent(plotType)}`);
-  return await response.json(); 
+  const response = await fetch(
+    `${API_BASE}/points?plot=${encodeURIComponent(plotType)}`
+  );
+  return await response.json();
 }
 
 export async function fetchLabel(plotType: string): Promise<LabelItem[]> {
-  const response = await fetch(`http://localhost:443/api/labels?plot=${encodeURIComponent(plotType)}`);
-  return await response.json(); 
+  const response = await fetch(
+    `${API_BASE}/labels?plot=${encodeURIComponent(plotType)}`
+  );
+  return await response.json();
 }
 
 export async function fetchRank(plotType: string): Promise<RankItem[]> {
-  const response = await fetch(`http://localhost:443/api/ranks?plot=${encodeURIComponent(plotType)}`);
-  return await response.json(); 
+  const response = await fetch(
+    `${API_BASE}/ranks?plot=${encodeURIComponent(plotType)}`
+  );
+  return await response.json();
 }
 
 export function getMinVal(data: DataItem[]) {
