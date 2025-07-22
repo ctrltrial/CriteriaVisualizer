@@ -34,11 +34,17 @@ function App() {
   );
   const [hasUserInteracted, setHasUserInteracted] = useState<boolean>(false);
   const [activePlot, setActivePlot] = useState("Breast Cancer");
+  const [colorMode, setColorMode] = useState<"years" | "clusters">("clusters");
 
   useEffect(() => {
     setHasUserInteracted(false);
     setHoveredCluster(undefined);
   }, [activePlot]);
+
+  useEffect(() => {
+    setHasUserInteracted(false);
+    setHoveredCluster(undefined);
+  }, [colorMode]);
 
   useEffect(() => {
     async function loadData() {
@@ -86,24 +92,76 @@ function App() {
     [data, range]
   );
 
-  // Define decade groups for color coding.
-  const fiveYearGroups = useMemo(
+  // Define cluster colors - using a diverse color palette
+  const clusterColors = useMemo(
     () => [
-      { start: 1990, end: 1995, color: "#BC13FE" }, // Neon Red
-      { start: 1995, end: 2000, color: "#FF00FF" }, // Neon Orange
-      { start: 2000, end: 2005, color: "#04D9FF" }, // Neon Yellow
-      { start: 2005, end: 2010, color: "#39FF14" }, // Neon Green
-      { start: 2010, end: 2015, color: "#FFFF33" }, // Neon Blue
-      { start: 2015, end: 2020, color: "#FF8C00" }, // Neon Magenta
-      { start: 2020, end: 2025, color: "#FF073A" }, // Neon Violet
+      "#BC13FE", // Neon Purple
+      "#FF00FF", // Neon Magenta
+      "#04D9FF", // Neon Cyan
+      "#39FF14", // Neon Green
+      "#FFFF33", // Neon Yellow
+      "#FF8C00", // Neon Orange
+      "#FF073A", // Neon Red
+      "#00FFFF", // Cyan
+      "#FF1493", // Deep Pink
+      "#32CD32", // Lime Green
+      "#FFD700", // Gold
+      "#FF4500", // Orange Red
+      "#9370DB", // Medium Purple
+      "#20B2AA", // Light Sea Green
+      "#FF69B4", // Hot Pink
+      "#00CED1", // Dark Turquoise
+      "#FF6347", // Tomato
+      "#8A2BE2", // Blue Violet
+      "#00FF7F", // Spring Green
+      "#FFB6C1", // Light Pink
     ],
     []
   );
 
-  // Group points by 5-year groups.
-  const pointGroups = useMemo(
-    () =>
-      fiveYearGroups.map(({ start, end, color }) => ({
+  // Define year groups for color coding
+  const yearGroups = useMemo(
+    () => [
+      { start: 1990, end: 1995, color: "#BC13FE" }, // Neon Purple
+      { start: 1995, end: 2000, color: "#FF00FF" }, // Neon Magenta
+      { start: 2000, end: 2005, color: "#04D9FF" }, // Neon Cyan
+      { start: 2005, end: 2010, color: "#39FF14" }, // Neon Green
+      { start: 2010, end: 2015, color: "#FFFF33" }, // Neon Yellow
+      { start: 2015, end: 2020, color: "#FF8C00" }, // Neon Orange
+      { start: 2020, end: 2025, color: "#FF073A" }, // Neon Red
+    ],
+    []
+  );
+
+  // Calculate cluster counts for sorting
+  const clusterCounts = useMemo(() => {
+    const counts: { [key: number]: number } = {};
+    filteredPoints.forEach(point => {
+      counts[point.CLUSTER] = (counts[point.CLUSTER] || 0) + 1;
+    });
+    return counts;
+  }, [filteredPoints]);
+
+  // Group points by clusters or years based on color mode
+  const pointGroups = useMemo(() => {
+    if (colorMode === "clusters") {
+      // Get unique clusters from filtered data
+      const uniqueClusters = [...new Set(filteredPoints.map(d => d.CLUSTER))].sort((a, b) => a - b);
+      
+      return uniqueClusters.map((cluster, index) => ({
+        points: filteredPoints
+          .filter((d) => d.CLUSTER === cluster)
+          .map(({ X, Y, CLUSTER }) => ({
+            X,
+            Y,
+            CLUSTER: String(CLUSTER),
+          })) as Point[],
+        color: clusterColors[index % clusterColors.length],
+        label: `Cluster ${cluster}`,
+      }));
+    } else {
+      // Group by years
+      return yearGroups.map(({ start, end, color }) => ({
         points: filteredPoints
           .filter((d) => d.YEAR >= start && d.YEAR < end)
           .map(({ X, Y, CLUSTER }) => ({
@@ -113,9 +171,9 @@ function App() {
           })) as Point[],
         color,
         label: `${start}-${end - 1}`,
-      })),
-    [filteredPoints, fiveYearGroups]
-  );
+      }));
+    }
+  }, [filteredPoints, clusterColors, yearGroups, colorMode]);
 
   const histogramData = useMemo(() => {
     if (data.length === 0) return [];
@@ -140,7 +198,7 @@ function App() {
       <div className="flex-1 relative">
         <Canvas
           orthographic
-          camera={{ zoom: 40, position: [0, 0, 100] }}
+          camera={{ zoom: 5.5, position: [0, 0, 100] }}
           style={{ background: "#1e1e1e" }}
         >
           <OrbitControls
@@ -164,8 +222,8 @@ function App() {
               pointColor={group.color}
               stretchX={1.2}
               highlightedCluster={hoveredCluster}
-              // Only auto-fit if the user hasn't interacted yet:
-              autoFit={!hasUserInteracted}
+              // Disable auto-fit to maintain consistent zoom
+              autoFit={false}
             />
           ))}
 
@@ -181,6 +239,8 @@ function App() {
           hoveredCluster={hoveredCluster}
           setHoveredCluster={setHoveredCluster}
           activePlot={activePlot}
+          clusterColors={clusterColors}
+          clusterCounts={clusterCounts}
         />
         <PlotToggle
           activePlot={activePlot}
@@ -188,17 +248,48 @@ function App() {
           plots={["Breast Cancer", "Lung Cancer", "GI Oncology"]}
         />
 
-        <div className="absolute right-4 bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10 top-4 lg:top-auto lg:bottom-4">
-          {pointGroups.map(({ label, color }) => (
-            <div key={label} className="flex items-center my-1">
-              <div
-                className="w-3 h-3 mr-2 rounded"
-                style={{ backgroundColor: color }}
-              />
-              <span className="text-xs">{label}</span>
-            </div>
-          ))}
+        <div className="absolute top-4 right-4 z-50 bg-[rgba(30,30,30,0.5)] backdrop-blur rounded p-2 shadow-md transition-all duration-300 ease-in-out">
+          <div className="flex flex-col sm:flex-row gap-2 z-10">
+            <button
+              onClick={() => setColorMode("years")}
+              className={`text-xs sm:text-sm px-3 py-1 rounded transition-all duration-200 ease-in-out hover:scale-105
+                ${
+                  colorMode === "years"
+                    ? "bg-white text-black font-semibold"
+                    : "bg-white/10 text-white hover:bg-white/20"
+                }`}
+            >
+              Years
+            </button>
+            <button
+              onClick={() => setColorMode("clusters")}
+              className={`text-xs sm:text-sm px-3 py-1 rounded transition-all duration-200 ease-in-out hover:scale-105
+                ${
+                  colorMode === "clusters"
+                    ? "bg-white text-black font-semibold"
+                    : "bg-white/10 text-white hover:bg-white/20"
+                }`}
+            >
+              Clusters
+            </button>
+          </div>
         </div>
+
+        {colorMode === "years" && (
+          <div className="absolute right-4 bg-[rgba(30,30,30,0.3)] backdrop-blur-3xl rounded-lg text-white border border-white/20 p-3 z-10 bottom-4 w-[140px] sm:w-[160px] md:w-[140px] lg:w-[160px] xl:w-[180px] transition-all duration-300 ease-in-out">
+            <div className="text-xs font-semibold mb-2">Years</div>
+            {yearGroups.map(({ start, end, color }) => (
+              <div key={`${start}-${end}`} className="flex items-center my-1">
+                <div
+                  className="w-3 h-3 mr-2 rounded"
+                  style={{ backgroundColor: color }}
+                />
+                <span className="text-xs">{`${start}-${end - 1}`}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
       </div>
       <RangeSlider
         data={histogramData}
