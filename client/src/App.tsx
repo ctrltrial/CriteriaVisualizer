@@ -32,17 +32,14 @@ function App() {
   const [hoveredCluster, setHoveredCluster] = useState<string | undefined>(
     undefined
   );
-  const [hasUserInteracted, setHasUserInteracted] = useState<boolean>(false);
   const [activePlot, setActivePlot] = useState("Breast Cancer");
   const [colorMode, setColorMode] = useState<"years" | "clusters">("clusters");
 
   useEffect(() => {
-    setHasUserInteracted(false);
     setHoveredCluster(undefined);
   }, [activePlot]);
 
   useEffect(() => {
-    setHasUserInteracted(false);
     setHoveredCluster(undefined);
   }, [colorMode]);
 
@@ -209,7 +206,6 @@ function App() {
             screenSpacePanning={true}
             maxAzimuthAngle={0}
             minAzimuthAngle={0}
-            onStart={() => setHasUserInteracted(true)}
           />
 
           {pointGroups.map((group, i) => (

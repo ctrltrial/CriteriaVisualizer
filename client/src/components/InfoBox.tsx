@@ -35,7 +35,6 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
       <div className="overflow-y-auto no-scrollbar max-h-[calc(50vh-6rem)] flex-grow">
         <ul className="text-xs pl-1">
           {sortedRanks.map(({ CLUSTER, LABEL, RANK }, index) => {
-            const clusterColor = clusterColors[CLUSTER - 1] || "#ffffff";
             return (
               <li
                 key={CLUSTER}
@@ -48,7 +47,8 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
                 onMouseLeave={() => setHoveredCluster(undefined)}
               >
                 <div className="flex items-center">
-                  <span className="font-bold text-white/80">{index + 1}.</span> {LABEL}
+                  <span className="font-bold text-white/80">{index + 1}.</span>{" "}
+                  {LABEL}
                 </div>
               </li>
             );
