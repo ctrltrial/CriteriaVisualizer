@@ -1,16 +1,15 @@
-FROM node:18
-
+# Build stage
+FROM node:18-alpine AS builder
 WORKDIR /app
-
 COPY . .
-
-RUN npm install
-
+RUN npm install --include=dev
 RUN npm run build
 
-# Use a lightweight static file server for the built site
+# Production stage
+FROM node:18-alpine
+WORKDIR /app
 RUN npm install -g serve
+COPY --from=builder /app/dist ./dist
 
 EXPOSE 3000
-
 CMD ["serve", "-s", "dist", "-l", "3000"]

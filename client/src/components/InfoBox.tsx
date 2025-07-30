@@ -15,7 +15,6 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
   hoveredCluster,
   setHoveredCluster,
   activePlot, // new prop
-  clusterColors = [], // new prop with default value
   clusterCounts = {}, // new prop with default value
 }) => {
   const sortedRanks = rankData.slice().sort((a, b) => {
@@ -34,7 +33,7 @@ export const InfoBox: React.FC<InfoBoxProps> = ({
       {/* Scrollable List (with hidden scrollbar) */}
       <div className="overflow-y-auto no-scrollbar max-h-[calc(50vh-6rem)] flex-grow">
         <ul className="text-xs pl-1">
-          {sortedRanks.map(({ CLUSTER, LABEL, RANK }, index) => {
+          {sortedRanks.map(({ CLUSTER, LABEL }, index) => {
             return (
               <li
                 key={CLUSTER}

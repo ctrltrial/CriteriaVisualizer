@@ -22,7 +22,7 @@ export interface RankItem {
 const API_BASE =
   window.location.hostname === "localhost"
     ? "http://localhost:4000/api"
-    : "http://3.15.150.112:4000/api"; // my ec2 host address
+    : "http://3.23.217.207:4000/api"; // my ec2 host address
 
 export async function fetchData(plotType: string): Promise<DataItem[]> {
   const response = await fetch(
